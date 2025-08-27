@@ -1,0 +1,105 @@
+.glitchBase,
+.glitchRed,
+.glitchGreen,
+.glitchBlue {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.glitchBase {
+  opacity: 1;
+  z-index: 1;
+}
+
+.glitchRed {
+  filter: drop-shadow(-1px 0 red);
+  animation: glitchShift 1.2s infinite;
+  mix-blend-mode: lighten;
+  z-index: 2;
+}
+.glitchGreen {
+  filter: drop-shadow(1px 0 green);
+  animation: glitchShift 1.4s infinite;
+  mix-blend-mode: lighten;
+  z-index: 3;
+}
+.glitchBlue {
+  filter: drop-shadow(0 -1px blue);
+  animation: glitchShift 1.6s infinite;
+  mix-blend-mode: lighten;
+  z-index: 4;
+}
+
+@keyframes glitchShift {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 1px);
+  }
+  40% {
+    transform: translate(2px, -1px);
+  }
+  60% {
+    transform: translate(-1px, 2px);
+  }
+  80% {
+    transform: translate(1px, -2px);
+  }
+}
+
+
+@keyframes barGlitch {
+  0%, 100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  20% {
+    opacity: 0.5;
+    transform: translateX(-4px);
+  }
+  40% {
+    opacity: 1;
+    transform: translateX(6px);
+  }
+  60% {
+    opacity: 0.4;
+    transform: translateX(-2px);
+  }
+  80% {
+    opacity: 0.7;
+    transform: translateX(3px);
+  }
+}
+
+.glitchBar {
+  position: absolute;
+  height: 3px;
+  animation: barGlitch 2s infinite ease-in-out;
+  mix-blend-mode: lighten;
+  opacity: 0.5;
+}
+
+.glitchBar1 {
+  background-color: #00ffae;
+  width: 70%;
+  top: 25%;
+  animation-delay: 0.2s;
+}
+.glitchBar2 {
+  background-color: #ff00ff;
+  width: 60%;
+  top: 40%;
+  animation-delay: 0.5s;
+}
+.glitchBar3 {
+  background-color: #ffffff;
+  width: 80%;
+  top: 55%;
+  animation-delay: 0.8s;
+}
