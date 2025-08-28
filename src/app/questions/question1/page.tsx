@@ -6,10 +6,9 @@ import api from "@/lib/axios";
 const QUESTION_1 = {
   id: 1,
   title: "Welcome to CTF",
-  difficulty: 'Easy',
-  flag: "DECIPHER{welcome_to_ctf}",
+  flag: "DECIPHER{Welcome_newbies}",
   description: "A simple Base64 decoding challenge to get you started.",
-  challenge: "SGVyZSBpcyB5b3VyIGZpcnN0IGZsYWc6IERFQ0lQSEVSe3dlbGNvbWVfdG9fY3RmfQ=="
+  challenge: "V2VsY29tZSwgWS0yNSBiYXRjaCwgdG8gRGVjaXBoZXIhIEdldCByZWFkeSB0byBleHBsb3JlLCBsZWFybiwgYW5kIGNoYWxsZW5nZSB5b3Vyc2VsZiBpbiB0aGUgd29ybGQgb2YgY3liZXJzZWN1cml0eS4gTGV0cyBkZWNvZGUgdGhlIHVua25vd24gYW5kIGdyb3cgdG9nZXRoZXIuIFdlbGNvbWUgYWJvYXJkIQpUSGUgZmxhZyBpcyAtIERFQ0lQSEVSe1dlbGNvbWVfbmV3Ymllc30="
 };
 
 export default function Question1Page() {
@@ -215,9 +214,7 @@ export default function Question1Page() {
             <span className="text-orange-300">[</span> QUESTION {QUESTION_1.id} <span className="text-orange-300">]</span>
           </h1>
           <div className="flex gap-4">
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-4 py-2 rounded font-mono text-green-200">
-              {QUESTION_1.difficulty}
-            </span>
+           
            
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
@@ -264,11 +261,7 @@ export default function Question1Page() {
             <p className="text-gray-400 text-sm mt-3 font-mono">💡 Click the message above to copy it to your clipboard</p>
           </div>
           
-          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
-            <p className="text-yellow-200 text-lg font-mono">
-              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{flag_text}'}
-            </p>
-          </div>
+        
         </div>
 
         {/* Flag Submission */}

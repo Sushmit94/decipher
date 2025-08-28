@@ -14,31 +14,31 @@ const QUESTIONS = [
     id: 1,
     title: "Welcome to CTF",
     difficulty: 'Easy',
-    points: 100,
-    flag: "DECIPHER{welcome_to_ctf}",
+    points: 1,
+    flag: "DECIPHER{Welcome_newbies}",
     description: "A simple Base64 decoding challenge to get you started."
   },
   {
     id: 2,
     title: "Caesar's Secret",
     difficulty: 'Easy',
-    points: 150,
-    flag: "DECIPHER{julius_caesar_cipher}",
+    points: 1,
+    flag: "DECIPHER{Khaleesi}",
     description: "Decode the Caesar cipher to find the flag."
   },
   {
     id: 3,
     title: "Hidden in Plain Sight",
     difficulty: 'Medium',
-    points: 200,
-    flag: "DECIPHER{steganography_rocks}",
+    points: 1,
+    flag: "DECIPHER{M3T4D4T4_4NALY51S}",
     description: "Look deeper into the image to find the hidden message."
   },
   {
     id: 4,
     title: "Web Inspector",
     difficulty: 'Medium',
-    points: 250,
+    points: 1,
     flag: "DECIPHER{inspect_element_pro}",
     description: "Use browser developer tools to find the flag."
   },
@@ -46,47 +46,47 @@ const QUESTIONS = [
     id: 5,
     title: "Binary Secrets",
     difficulty: 'Hard',
-    points: 300,
-    flag: "DECIPHER{binary_is_life}",
+    points: 1,
+    flag: "DECIPHER{Pavlou}",
     description: "Convert the binary message to text."
   },
   {
     id: 6,
     title: "SQL Injection",
     difficulty: 'Hard',
-    points: 400,
-    flag: "DECIPHER{sql_injection_master}",
+    points: 1,
+    flag: "DECIPHER{St3g_1s_Th3_b35t}",
     description: "Find the SQL injection vulnerability."
   },
   {
     id: 7,
     title: "Advanced Steganography",
     difficulty: 'Hard',
-    points: 400,
-    flag: "DECIPHER{advanced_steg_master}",
+    points: 1,
+    flag: "DECIPHER{Dh0N1_1s_Th3_B3st}",
     description: "Advanced steganography techniques required."
   },
   {
     id: 8,
     title: "Reverse Engineering",
     difficulty: 'Hard',
-    points: 500,
-    flag: "DECIPHER{reverse_eng_pro}",
+    points: 1,
+    flag: "DECIPHER{sp3ctr0}",
     description: "Reverse engineer the binary to find the flag."
   },
   {
     id: 9,
     title: "Final Challenge",
     difficulty: "Hard",
-    points: 600,
-    flag: "DECIPHER{final_boss_defeated}",
+    points: 1,
+    flag: "DECIPHER{URL_p4r4m3t3r_m4n1pul4t10n_1s_fun}",
     description: "The ultimate challenge awaits the worthy."
   },
   {
     id: 10,
     title: "Final Challenge",
     difficulty: "Hard",
-    points: 600,
+    points: 1,
     flag: "DECIPHER{final_boss_defeated}",
     description: "The ultimate challenge awaits the worthy."
   },
@@ -94,7 +94,7 @@ const QUESTIONS = [
     id: 11,
     title: "Final Challenge",
     difficulty: "Hard",
-    points: 600,
+    points: 1,
     flag: "DECIPHER{final_boss_defeated}",
     description: "The ultimate challenge awaits the worthy."
   },
@@ -102,7 +102,7 @@ const QUESTIONS = [
     id: 12,
     title: "Final Challenge",
     difficulty: "Hard",
-    points: 600,
+    points: 1,
     flag: "DECIPHER{final_boss_defeated}",
     description: "The ultimate challenge awaits the worthy."
   },
@@ -429,7 +429,7 @@ export default function QuestionsPage() {
                       {completed ? 'COMPLETED' : unlocked ? 'AVAILABLE' : 'LOCKED'}
                     </span>
                     <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
-                      {question.points} pts
+                      {question.points} pt
                     </span>
                   </div>
                 </div>

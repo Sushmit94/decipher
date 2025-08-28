@@ -6,8 +6,6 @@ import api from "@/lib/axios";
 const QUESTION_8 = {
   id: 8,
   title: "Hidden Frequencies",
-  difficulty: 'Expert',
-  points: 600,
   flag: "DECIPHER{sp3ctr0}",
   description: "Not everything you hear is what it seems. Sometimes, you need to look beyond the sound waves. Audio files can hide secrets in their frequency spectrum, waveforms, or even in the silence between notes. Use audio analysis tools to uncover what's hidden in the digital sound.",
   challenge: "audio1.wav"
@@ -251,12 +249,8 @@ export default function Question8Page() {
             <span className="text-orange-300">[</span> QUESTION {QUESTION_8.id} <span className="text-orange-300">]</span>
           </h1>
           <div className="flex gap-4">
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-4 py-2 rounded font-mono text-green-200">
-              {QUESTION_8.difficulty}
-            </span>
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
-              {QUESTION_8.points} pts
-            </span>
+            
+      
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
             </span>
@@ -274,8 +268,8 @@ export default function Question8Page() {
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">✅</span>
-            <span className="text-xl font-mono text-green-300">COMPLETED - {QUESTION_8.points} POINTS EARNED</span>
+            <span className="text-2xl mr-3">✅ COMPLETED </span>
+          
           </div>
         )}
 
@@ -341,11 +335,7 @@ export default function Question8Page() {
             </div>
           </div>
           
-          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
-            <p className="text-yellow-200 text-lg font-mono">
-              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{flag_text}'}
-            </p>
-          </div>
+         
         </div>
 
         {/* Flag Submission */}

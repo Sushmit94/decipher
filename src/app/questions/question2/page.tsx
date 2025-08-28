@@ -5,11 +5,11 @@ import api from "@/lib/axios";
 
 const QUESTION_2 = {
   id: 2,
-  title: "Caesar's Secret",
-  difficulty: 'Easy',
-  flag: "DECIPHER{julius_caesar_cipher}",
-  description: "Decode the Caesar cipher to find the flag. Remember, Caesar used a shift of 3!",
-  challenge: "GHFLSKHU{mxolxv_fdhvdu_flskhu}"
+  title: "Ancient Script",
+  
+  
+  flag: "DECIPHER{Khaleesi}",
+  description: "This word belongs to a language spoken by nomadic horse riders in a famous fantasy world. Can you decipher it?",
 };
 
 export default function Question2Page() {
@@ -65,14 +65,14 @@ export default function Question2Page() {
       const points = await fetchTotalPoints();
       setTotalPoints(points);
       
-      // Question 2 requires 100 (Q1) + 150 (Q2) = 250 total points
-      // If points >= 250, then question 2 is already solved
+      // Question 4 requires 100 + 150 + 150 + 200 = 600 total points
+      // If points >= 600, then question 4 is already solved
       if (points >= 2) {
         setCompleted(true);
         setIsSuccess(true);
-      } else if (points < 1) {
+      }else if (points < 1) {
         // User hasn't completed previous questions, redirect them
-        setError("You must complete Questions 1-4 first!");
+        setError("You must complete Questions 1-2 first!");
         setTimeout(() => {
           router.push('/questions');
         }, 2000);
@@ -118,7 +118,7 @@ export default function Question2Page() {
           
           // Auto-navigate to next question after 3 seconds
           setTimeout(() => {
-            router.push('/questions/question3');
+            router.push('/questions/question5');
           }, 3000);
           
         } else {
@@ -155,7 +155,9 @@ export default function Question2Page() {
     }
   };
 
-  
+  const showHint = () => {
+    alert("💡 HINT: This script belongs to the horse lords of the Great Grass Sea. Think about famous fantasy TV shows and the title given to their queen!");
+  };
 
   // Show loading state
   if (isLoading) {
@@ -217,9 +219,7 @@ export default function Question2Page() {
             <span className="text-orange-300">[</span> QUESTION {QUESTION_2.id} <span className="text-orange-300">]</span>
           </h1>
           <div className="flex gap-4">
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-4 py-2 rounded font-mono text-green-200">
-              {QUESTION_2.difficulty}
-            </span>
+           
            
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
@@ -238,8 +238,8 @@ export default function Question2Page() {
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">✅ Completed </span>
-            
+            <span className="text-2xl mr-3">✅ COMPLETED </span>
+           
           </div>
         )}
 
@@ -249,23 +249,28 @@ export default function Question2Page() {
           <p className="mb-8 text-lg text-gray-200 font-mono">{QUESTION_2.description}</p>
           
           {/* Challenge */}
-          <div className="bg-black/60 border-2 border-yellow-400/50 rounded-lg p-6 mb-6">
-            <h3 className="text-yellow-300 mb-4 text-xl font-mono flex items-center">
-              <span className="mr-3 text-2xl">🏛️</span>
-              CAESAR'S CIPHER:
+          <div className="bg-black/60 border-2 border-amber-400/50 rounded-lg p-6 mb-6">
+            <h3 className="text-amber-300 mb-4 text-xl font-mono flex items-center">
+              <span className="mr-3 text-2xl">🐎</span>
+              NOMADIC SCRIPT:
             </h3>
-            <div 
-              className="font-mono text-green-400 text-lg break-all cursor-pointer select-all bg-black/60 p-4 rounded border-2 border-green-400/30 hover:border-green-300/60 transition-all"
-              onClick={() => {
-                navigator.clipboard.writeText(QUESTION_2.challenge);
-                alert('📋 Copied to clipboard!');
-              }}
-              title="Click to copy"
-            >
-              {QUESTION_2.challenge}
+            
+            {/* Script Image Display */}
+            <div className="bg-black/60 p-6 rounded border-2 border-amber-400/30 text-center">
+              <img 
+                src="/q4.png" 
+                alt="Dothraki Script Challenge" 
+                className="max-w-full h-auto rounded-lg border-2 border-amber-400/30 mx-auto bg-white p-4"
+                style={{ maxHeight: '200px' }}
+              />
             </div>
-            <p className="text-gray-400 text-sm mt-3 font-mono">💡 Click the cipher above to copy it to your clipboard</p>
+            
+            <p className="text-gray-400 text-sm mt-3 font-mono">📜 Ancient script of the horse lords</p>
           </div>
+          
+          
+          
+          
         </div>
 
         {/* Flag Submission */}
@@ -315,7 +320,7 @@ export default function Question2Page() {
           
           {completed && (
             <button 
-              onClick={() => router.push('/questions/question3')}
+              onClick={() => router.push('/questions/question5')}
               className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 hover:border-cyan-300 px-6 py-4 rounded-lg hover:bg-cyan-900/40 font-mono text-cyan-200 transition-all group animate-pulse"
             >
               <span className="mr-3">➡️</span>

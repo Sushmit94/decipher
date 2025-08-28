@@ -6,8 +6,8 @@ import api from "@/lib/axios";
 const QUESTION_5 = {
   id: 5,
   title: "The Incomplete Identifier",
-  difficulty: 'Hard',
-  points: 300,
+  
+  
   flag: "DECIPHER{Pavlou}",
   description: "A manifest lists this code: 978031236696_ with a note: Check digit mismatch detected. It's part of a global system for cataloging published works. Complete the identifier, find what it refers to, and submit the creator's surname.",
   challenge: "978031236696_"
@@ -220,12 +220,8 @@ export default function Question5Page() {
             <span className="text-orange-300">[</span> QUESTION {QUESTION_5.id} <span className="text-orange-300">]</span>
           </h1>
           <div className="flex gap-4">
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-red-400/50 px-4 py-2 rounded font-mono text-red-200">
-              {QUESTION_5.difficulty}
-            </span>
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
-              {QUESTION_5.points} pts
-            </span>
+           
+          
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
             </span>
@@ -243,8 +239,8 @@ export default function Question5Page() {
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">✅</span>
-            <span className="text-xl font-mono text-green-300">COMPLETED - {QUESTION_5.points} POINTS EARNED</span>
+            <span className="text-2xl mr-3">✅COMPLETED</span>
+           
           </div>
         )}
 

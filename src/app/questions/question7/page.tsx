@@ -6,8 +6,8 @@ import api from "@/lib/axios";
 const QUESTION_7 = {
   id: 7,
   title: "Digital Detective Work",
-  difficulty: 'Expert',
-  points: 500,
+
+ 
   flag: "DECIPHER{Dh0N1_1s_Th3_B3st}",
   description: "Welcome to the world of OSINT (Open Source Intelligence)! Your mission is to gather information from publicly available sources. Investigate the given website thoroughly - examine the source code, check for hidden elements, analyze metadata, and use your detective skills to uncover the hidden flag. Remember, in OSINT, the devil is in the details!",
   challenge: "https://mathurninaad.github.io/PookieDhoni/"
@@ -226,12 +226,8 @@ export default function Question7Page() {
             <span className="text-orange-300">[</span> QUESTION {QUESTION_7.id} <span className="text-orange-300">]</span>
           </h1>
           <div className="flex gap-4">
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-red-400/50 px-4 py-2 rounded font-mono text-red-200">
-              {QUESTION_7.difficulty}
-            </span>
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
-              {QUESTION_7.points} pts
-            </span>
+            
+            
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
             </span>
@@ -249,8 +245,8 @@ export default function Question7Page() {
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">🕵️</span>
-            <span className="text-xl font-mono text-green-300">OSINT MASTER - {QUESTION_7.points} POINTS EARNED</span>
+            <span className="text-2xl mr-3">COMPLETED</span>
+           
           </div>
         )}
 
@@ -296,11 +292,7 @@ export default function Question7Page() {
             </div>
           </div>
           
-          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
-            <p className="text-yellow-200 text-lg font-mono">
-              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{flag_text}'}
-            </p>
-          </div>
+         
         </div>
 
         {/* Flag Submission */}
@@ -310,13 +302,7 @@ export default function Question7Page() {
             SUBMIT YOUR FINDINGS:
           </label>
           
-          {completed && (
-            <div className="mb-4 p-4 bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg">
-              <p className="text-yellow-200 font-mono text-center">
-                ⚠️ Question already completed! You cannot earn more points for this question.
-              </p>
-            </div>
-          )}
+
           
           <form onSubmit={handleSubmit}>
             <div className="flex gap-4">

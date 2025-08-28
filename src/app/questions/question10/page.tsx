@@ -4,16 +4,16 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
 
-const QUESTION_9 = {
-  id: 9,
-  title: "The Deceptive Gate",
-
-  flag: "DECIPHER{URL_p4r4m3t3r_m4n1pul4t10n_1s_fun}",
-  description: "I built this super secure gate to protect my precious flag! 🔐 There's only one way in - you have to click the button that says what you want. But here's the thing... I only gave you the option to say 'NO' because I'm pretty sure you don't actually want my flag anyway, right? 😏 The system is foolproof! There's absolutely no way you could possibly tell my server that you want the flag when I've only given you a button that says you don't want it.",
-  challengeUrl: "https://query-tdfw.onrender.com"
+const QUESTION_10 = {
+  id: 10,
+  title: "Anonymous Cheating",
+  flag: "DECIPHER{0x_tr4ns4ct10n_tr4c1ng_r3v34ls_4ll}",
+  description: "A cheater just bought a flag to one of the problems to the CTF through a blockchain smart contract setup by the black market seller on the Sepolia testnet. He used his personal wallet to send 0.05 ETH to his alt wallet for buying the flag. Can you find the proof of him cheating? 🕵️‍♂️ Trace the transaction flow and discover what really happened on the blockchain. The truth is always recorded on-chain!",
+  cheaterWallet: "0xaa8A4A0df322aB0a1B5D623450ee1d426aC43C2F",
+  blockExplorer: "https://sepolia.etherscan.io/"
 };
 
-function Question9Page() {
+function Question10Page() {
   const [flagInput, setFlagInput] = useState("");
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -66,14 +66,14 @@ function Question9Page() {
       const points = await fetchTotalPoints();
       setTotalPoints(points);
       
-      // Question 9 requires completing questions 1-8 first
-      // If points >= 9, then question 9 is already solved
-      if (points >= 9) {
+      // Question 10 requires completing questions 1-9 first
+      // If points >= 10, then question 10 is already solved
+      if (points >= 10) {
         setCompleted(true);
         setIsSuccess(true);
-      } else if (points < 8) {
+      } else if (points < 9) {
         // User hasn't completed previous questions, redirect them
-        setError("You must complete Questions 1-8 first!");
+        setError("You must complete Questions 1-9 first!");
         setTimeout(() => {
           router.push('/questions');
         }, 2000);
@@ -95,7 +95,7 @@ function Question9Page() {
   const handleSubmit = async (e:any) => {
     e.preventDefault();
     
-    if (flagInput.trim() === QUESTION_9.flag) {
+    if (flagInput.trim() === QUESTION_10.flag) {
       setIsSubmitting(true);
       try {
         const response = await api.post("/api/v1/register/add-points", {});
@@ -103,23 +103,23 @@ function Question9Page() {
         if (response.data.success) {
           setCompleted(true);
           setTotalPoints(response.data.data.points);
-          setMessage(`Correct! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. Redirecting...`);
+          setMessage(`Correct! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. Well done, blockchain detective! 🕵️‍♂️`);
           setIsSuccess(true);
           
           // Dispatch event to notify questions page
           const event = new CustomEvent('questionCompleted', {
             detail: {
-              questionId: QUESTION_9.id,
+              questionId: QUESTION_10.id,
               points: response.data.data.pointsAdded,
               totalPoints: response.data.data.points
             }
           });
           window.dispatchEvent(event);
           
-          // Auto-navigate to next question after 3 seconds
+          // Auto-navigate to next question after 4 seconds
           setTimeout(() => {
-            router.push('/questions/question10');
-          }, 3000);
+            router.push('/questions');
+          }, 4000);
           
         } else {
           throw new Error(response.data.message || "Failed to add points");
@@ -147,7 +147,7 @@ function Question9Page() {
         setIsSubmitting(false);
       }
     } else {
-      setMessage("Incorrect flag. Try again!");
+      setMessage("Incorrect flag. Keep investigating the blockchain! 🔍");
       setIsSuccess(false);
       
       // Clear message after 3 seconds for incorrect answers
@@ -155,9 +155,17 @@ function Question9Page() {
     }
   };
 
+  const showHint = () => {
+    alert("💡 HINT: Start by searching the cheater's wallet address on Sepolia Etherscan. Look for outgoing transactions of exactly 0.05 ETH. Then follow the trail to see what happened next! The blockchain never lies. 🔗");
+  };
 
-  const openChallenge = () => {
-    window.open(QUESTION_9.challengeUrl, '_blank');
+  const openBlockExplorer = () => {
+    window.open(`${QUESTION_10.blockExplorer}address/${QUESTION_10.cheaterWallet}`, '_blank');
+  };
+
+  const copyWalletAddress = () => {
+    navigator.clipboard.writeText(QUESTION_10.cheaterWallet);
+    alert('📋 Wallet address copied to clipboard!');
   };
 
   // Show loading state
@@ -179,7 +187,7 @@ function Question9Page() {
           <div className="max-w-4xl mx-auto flex items-center justify-center min-h-screen">
             <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400 mx-auto mb-4"></div>
-              <p className="text-xl font-mono text-green-200">Loading question status...</p>
+              <p className="text-xl font-mono text-green-200">Loading blockchain investigation...</p>
             </div>
           </div>
         </div>
@@ -217,11 +225,9 @@ function Question9Page() {
             <span className="group-hover:animate-pulse">BACK TO QUESTIONS</span>
           </button>
           <h1 className="text-4xl font-bold font-mono text-orange-400">
-            <span className="text-orange-300">[</span> QUESTION {QUESTION_9.id} <span className="text-orange-300">]</span>
+            <span className="text-orange-300">[</span> QUESTION {QUESTION_10.id} <span className="text-orange-300">]</span>
           </h1>
           <div className="flex gap-4">
-           
-            
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
             </span>
@@ -239,53 +245,66 @@ function Question9Page() {
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">✅ Completed </span>
-            
+            <span className="text-2xl mr-3">✅</span>
+            <span className="text-xl font-mono text-green-300">Investigation Complete! Cheater caught red-handed! 🕵️‍♂️</span>
           </div>
         )}
 
-
         {/* Question Content */}
         <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 mb-8">
-          <h2 className="text-3xl font-bold mb-6 font-mono text-white">{QUESTION_9.title}</h2>
-          <p className="mb-8 text-lg text-gray-200 font-mono leading-relaxed">{QUESTION_9.description}</p>
+          <h2 className="text-3xl font-bold mb-6 font-mono text-white flex items-center">
+            <span className="mr-4 text-4xl">🕵️‍♂️</span>
+            {QUESTION_10.title}
+          </h2>
+          <p className="mb-8 text-lg text-gray-200 font-mono leading-relaxed">{QUESTION_10.description}</p>
           
-          {/* Challenge URL */}
-          <div className="bg-black/60 border-2 border-blue-400/50 rounded-lg p-6 mb-6">
-            <h3 className="text-blue-300 mb-4 text-xl font-mono flex items-center">
-              <span className="mr-3 text-2xl">🔐</span>
-              CHALLENGE URL:
-            </h3>
-            <div 
-              className="font-mono text-green-400 text-xl break-all cursor-pointer select-all bg-black/60 p-6 rounded border-2 border-green-400/30 hover:border-green-300/60 transition-all text-center"
-              onClick={() => {
-                navigator.clipboard.writeText(QUESTION_9.challengeUrl);
-                alert('📋 URL copied to clipboard!');
-              }}
-              title="Click to copy URL"
-            >
-              {QUESTION_9.challengeUrl}
+          {/* Investigation Details */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Cheater Wallet */}
+            <div className="bg-black/60 border-2 border-red-400/50 rounded-lg p-6">
+              <h3 className="text-red-300 mb-4 text-xl font-mono flex items-center">
+                <span className="mr-3 text-2xl">👤</span>
+                SUSPECT WALLET:
+              </h3>
+              <div 
+                className="font-mono text-red-400 text-lg break-all cursor-pointer select-all bg-black/60 p-4 rounded border-2 border-red-400/30 hover:border-red-300/60 transition-all"
+                onClick={copyWalletAddress}
+                title="Click to copy wallet address"
+              >
+                {QUESTION_10.cheaterWallet}
+              </div>
+              <p className="text-gray-400 text-sm mt-3 font-mono">💡 Click to copy address</p>
             </div>
-            <p className="text-gray-400 text-sm mt-3 font-mono text-center">💡 Click the URL above to copy it to your clipboard</p>
+
+            {/* Block Explorer */}
+            <div className="bg-black/60 border-2 border-blue-400/50 rounded-lg p-6">
+              <h3 className="text-blue-300 mb-4 text-xl font-mono flex items-center">
+                <span className="mr-3 text-2xl">🔗</span>
+                BLOCK EXPLORER:
+              </h3>
+              <div 
+                className="font-mono text-blue-400 text-lg break-all cursor-pointer select-all bg-black/60 p-4 rounded border-2 border-blue-400/30 hover:border-blue-300/60 transition-all"
+                onClick={() => {
+                  navigator.clipboard.writeText(QUESTION_10.blockExplorer);
+                  alert('📋 Explorer URL copied to clipboard!');
+                }}
+                title="Click to copy URL"
+              >
+                {QUESTION_10.blockExplorer}
+              </div>
+              <p className="text-gray-400 text-sm mt-3 font-mono">💡 Sepolia Testnet Explorer</p>
+            </div>
           </div>
+
+         
           
-          {/* Interactive Challenge Button */}
-          <div className="text-center mb-6">
-            <button
-              onClick={openChallenge}
-              className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-8 py-4 rounded-lg hover:bg-purple-900/40 font-mono text-purple-200 transition-all group text-xl"
-            >
-              <span className="mr-3 text-2xl">🚪</span>
-              <span className="group-hover:animate-pulse">OPEN CHALLENGE SITE</span>
-            </button>
-          </div>
         </div>
 
         {/* Flag Submission */}
         <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-6 mb-8">
           <label className="block text-white font-mono text-xl mb-4 flex items-center">
             <span className="mr-3 text-2xl">🚩</span>
-            SUBMIT YOUR FLAG:
+            SUBMIT PROOF OF CHEATING:
           </label>
           
           <form onSubmit={handleSubmit}>
@@ -294,7 +313,7 @@ function Question9Page() {
                 type="text"
                 value={flagInput}
                 onChange={(e) => setFlagInput(e.target.value)}
-                placeholder="DECIPHER{flag_here}"
+                placeholder="DECIPHER{proof_of_cheating_here}"
                 disabled={isSubmitting || completed}
                 className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all disabled:opacity-50"
               />
@@ -305,7 +324,7 @@ function Question9Page() {
               >
                 <span className="mr-2">🚀</span>
                 <span className="group-hover:animate-pulse">
-                  {isSubmitting ? 'SUBMITTING...' : completed ? 'COMPLETED' : 'SUBMIT FLAG'}
+                  {isSubmitting ? 'ANALYZING...' : completed ? 'CASE CLOSED' : 'SUBMIT EVIDENCE'}
                 </span>
               </button>
             </div>
@@ -324,7 +343,8 @@ function Question9Page() {
         {/* Actions */}
         <div className="flex justify-center gap-6">
          
-          {completed && (
+          
+        {completed && (
             <button 
               onClick={() => router.push('/questions/question10')}
               className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 hover:border-cyan-300 px-6 py-4 rounded-lg hover:bg-cyan-900/40 font-mono text-cyan-200 transition-all group animate-pulse"
@@ -340,4 +360,4 @@ function Question9Page() {
   );
 }
 
-export default Question9Page;
+export default Question10Page;

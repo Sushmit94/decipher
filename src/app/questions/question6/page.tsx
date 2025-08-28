@@ -1,90 +1,149 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios";
 
 const QUESTION_6 = {
   id: 6,
   title: "Hidden in Plain Sight",
-  difficulty: 'Expert',
-  points: 400,
   flag: "DECIPHER{St3g_1s_Th3_b35t}",
   description: "Just staring at this image won't reveal anything. So, start thinking on how we can embed data in an image?? The flag like always is hidden somewhere in this image. Search for it and if you get it. I'll say you've already begun your journey as a hacker!",
   challenge: "image2.jpeg"
 };
 
-export default function Question6Page() {
+function Question6Page() {
   const [flagInput, setFlagInput] = useState("");
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [totalPoints, setTotalPoints] = useState(0);
   const router = useRouter();
 
-  const handleSubmit = async (e: any) => {
+  // Function to fetch total points
+  const fetchTotalPoints = async () => {
+    try {
+      const response = await api.get('/api/v1/register/get-points');
+      
+      console.log("API Response status:", response.status);
+      console.log("API Response data:", response.data);
+
+      // Handle both response formats
+      if (response.data.success && typeof response.data.data?.points === 'number') {
+        return response.data.data.points;
+      } else if (typeof response.data.points === 'number') {
+        // Handle direct points response format
+        return response.data.points;
+      }
+
+      throw new Error('Invalid response format');
+    } catch (error:any) {
+      console.error('Error fetching points:', error);
+      
+      // Check if it's an authentication error
+      if (error.response?.status === 401) {
+        // Redirect to login if not authenticated
+        router.push('/login');
+        return 0;
+      }
+      
+      const errorMessage = error.response?.data?.message || 
+                         error.message || 
+                         'Failed to fetch points';
+      setError(errorMessage);
+      return 0;
+    }
+  };
+
+  // Check if question is already completed based on points
+  const checkQuestionCompletion = async () => {
+    setIsLoading(true);
+    try {
+      const points = await fetchTotalPoints();
+      setTotalPoints(points);
+      
+      // Question 6 requires completing questions 1-5 first
+      // If points >= 6, then question 6 is already solved
+      if (points >= 6) {
+        setCompleted(true);
+        setIsSuccess(true);
+      } else if (points < 5) {
+        // User hasn't completed previous questions, redirect them
+        setError("You must complete Questions 1-5 first!");
+        setTimeout(() => {
+          router.push('/questions');
+        }, 2000);
+      } else {
+        setCompleted(false);
+      }
+    } catch (error) {
+      console.error('Error checking question completion:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Check completion status on component mount
+  useEffect(() => {
+    checkQuestionCompletion();
+  }, []);
+
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     
     if (flagInput.trim() === QUESTION_6.flag) {
-      if (!completed) {
-        setIsSubmitting(true);
-        try {
-          const response = await api.post("/api/v1/register/add-points", {});
-          // Check if response is successful
-          if (response.data.success) {
-            setCompleted(true);
-            setMessage(`Correct! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. You've already begun your journey as a hacker!`);
-            setIsSuccess(true);
-            
-            // Dispatch event to notify questions page
-            const event = new CustomEvent('questionCompleted', {
-              detail: {
-                questionId: QUESTION_6.id,
-                points: response.data.data.pointsAdded,
-                totalPoints: response.data.data.points
-              }
-            });
-            window.dispatchEvent(event);
-            
-            // Auto-navigate to next question after 3 seconds (if question7 exists)
-            setTimeout(() => {
-              router.push('/questions/question7');
-            }, 3000);
-            
-          } else {
-            throw new Error(response.data.message || "Failed to add points");
-          }
+      setIsSubmitting(true);
+      try {
+        const response = await api.post("/api/v1/register/add-points", {});
+        // Check if response is successful
+        if (response.data.success) {
+          setCompleted(true);
+          setTotalPoints(response.data.data.points);
+          setMessage(`Correct! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. You've already begun your journey as a hacker!`);
+          setIsSuccess(true);
           
-        } catch (error: any) {
-          console.error("Error adding points:", error);
+          // Dispatch event to notify questions page
+          const event = new CustomEvent('questionCompleted', {
+            detail: {
+              questionId: QUESTION_6.id,
+              points: response.data.data.pointsAdded,
+              totalPoints: response.data.data.points
+            }
+          });
+          window.dispatchEvent(event);
           
-          // Check if it's an authentication error
-          if (error.response?.status === 401) {
-            setMessage("Authentication failed. Please log in again.");
-            setIsSuccess(false);
-            
-          } else {
-            const errorMessage = error.response?.data?.message || 
-                               error.message || 
-                               "Failed to submit answer. Please try again.";
-            setMessage(errorMessage);
-            setIsSuccess(false);
-          }
+          // Auto-navigate to next question after 3 seconds
+          setTimeout(() => {
+            router.push('/questions/question7');
+          }, 3000);
           
-          // Clear error message after 5 seconds
-          setTimeout(() => setMessage(""), 5000);
-          
-        } finally {
-          setIsSubmitting(false);
+        } else {
+          throw new Error(response.data.message || "Failed to add points");
         }
         
-      } else {
-        setMessage("Already completed! You are truly a steganography master!");
-        setIsSuccess(true);
+      } catch (error:any) {
+        console.error("Error adding points:", error);
         
-        // Navigate to next question
-        setTimeout(() => {
-          router.push('/questions/question7');
-        }, 1500);
+        // Check if it's an authentication error
+        if (error.response?.status === 401) {
+          setMessage("Authentication failed. Please log in again.");
+          setIsSuccess(false);
+        } else {
+          const errorMessage = error.response?.data?.message || 
+                             error.message || 
+                             "Failed to submit answer. Please try again.";
+          setMessage(errorMessage);
+          setIsSuccess(false);
+        }
+        
+        // Clear error message after 5 seconds
+        setTimeout(() => setMessage(""), 5000);
+        
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       setMessage("Incorrect flag. The secret is still hidden!");
@@ -95,9 +154,7 @@ export default function Question6Page() {
     }
   };
 
-  const showHint = () => {
-    alert("💡 HINT: Try using steganography tools like steghide, binwalk, or online steg analyzers. The data might be hidden in the LSB (Least Significant Bits) or using other steganographic techniques!");
-  };
+
 
   const downloadImage = () => {
     // Create a temporary link to download the image
@@ -109,13 +166,32 @@ export default function Question6Page() {
     document.body.removeChild(link);
   };
 
-  // Check if already completed on component mount
-  React.useEffect(() => {
-    const completedQuestions = JSON.parse(localStorage.getItem('completedQuestions') || '[]');
-    if (completedQuestions.includes(QUESTION_6.id)) {
-      setCompleted(true);
-    }
-  }, []);
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <div 
+          className="fixed inset-0 w-full h-full"
+          style={{
+            backgroundImage: "url('/y.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            zIndex: -2
+          }}
+        ></div>
+        <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+        <div className="relative z-10 text-white p-8">
+          <div className="max-w-4xl mx-auto flex items-center justify-center min-h-screen">
+            <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400 mx-auto mb-4"></div>
+              <p className="text-xl font-mono text-green-200">Loading question status...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -150,20 +226,24 @@ export default function Question6Page() {
             <span className="text-orange-300">[</span> QUESTION {QUESTION_6.id} <span className="text-orange-300">]</span>
           </h1>
           <div className="flex gap-4">
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-red-400/50 px-4 py-2 rounded font-mono text-red-200">
-              {QUESTION_6.difficulty}
-            </span>
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
-              {QUESTION_6.points} pts
+            <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
+              Total: {totalPoints} pts
             </span>
           </div>
         </div>
 
+        {/* Error Display */}
+        {error && (
+          <div className="bg-black/50 backdrop-blur-sm border-2 border-red-400/70 p-6 rounded-lg mb-8 text-center">
+            <span className="text-2xl mr-3">❌</span>
+            <span className="text-xl font-mono text-red-300">ERROR: {error}</span>
+          </div>
+        )}
+
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">🎯</span>
-            <span className="text-xl font-mono text-green-300">STEGANOGRAPHY MASTER - {QUESTION_6.points} POINTS EARNED</span>
+            <span className="text-2xl mr-3">✅ COMPLETED</span>
           </div>
         )}
 
@@ -225,17 +305,17 @@ export default function Question6Page() {
                 value={flagInput}
                 onChange={(e) => setFlagInput(e.target.value)}
                 placeholder="DECIPHER{hidden_flag_here}"
-                disabled={isSubmitting}
+                disabled={isSubmitting || completed}
                 className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all disabled:opacity-50"
               />
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || completed}
                 className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-mono text-green-200 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="mr-2">🔓</span>
                 <span className="group-hover:animate-pulse">
-                  {isSubmitting ? 'SUBMITTING...' : 'REVEAL SECRET'}
+                  {isSubmitting ? 'SUBMITTING...' : completed ? 'COMPLETED' : 'REVEAL SECRET'}
                 </span>
               </button>
             </div>
@@ -253,7 +333,7 @@ export default function Question6Page() {
 
         {/* Actions */}
         <div className="flex justify-center gap-6">
-        
+    
           
           {completed && (
             <button 
@@ -270,3 +350,5 @@ export default function Question6Page() {
     </div>
   );
 }
+
+export default Question6Page;
