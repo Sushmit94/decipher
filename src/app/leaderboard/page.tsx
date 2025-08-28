@@ -46,6 +46,15 @@ const LeaderboardPage = () => {
     fetchLeaderboard();
   }, []);
 
+  const getRankIcon = (rank: number) => {
+    switch (rank) {
+      case 1: return '👑';
+      case 2: return '🥈';
+      case 3: return '🥉';
+      default: return '';
+    }
+  };
+
   // Loading state
   if (isLoading) {
     return (
@@ -60,6 +69,15 @@ const LeaderboardPage = () => {
             zIndex: -2
           }}
         ></div>
+        
+        {/* Enhanced Loading */}
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-red-500/30 border-t-red-500 rounded-full animate-spin mb-4"></div>
+            <p className="text-white text-lg font-semibold animate-pulse">Loading Leaderboard...</p>
+          </div>
+        </div>
+        
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
           <p className="text-white/80 text-sm font-medium">
             Leaderboard
@@ -105,79 +123,98 @@ const LeaderboardPage = () => {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-8">
         {/* Main Leaderboard Container */}
         <div className="w-full max-w-4xl">
-          {/* Title */}
+          {/* Enhanced Title */}
           <div className="text-center mb-8">
             <h1
-              className="text-6xl font-bold text-red-600 mb-2 tracking-wider drop-shadow-lg"
+              className="text-6xl font-bold text-red-600 mb-2 tracking-wider drop-shadow-lg transform hover:scale-105 transition-transform duration-300"
               style={{
                 fontFamily: "monospace",
                 textShadow:
-                  "2px 2px 0px #fff, -1px -1px 0px #000, 1px -1px 0px #000",
+                  "2px 2px 0px #fff, -1px -1px 0px #000, 1px -1px 0px #000, 0 0 20px rgba(220, 38, 38, 0.5)",
               }}
             >
               LEADERBOARD
             </h1>
-         
           </div>
 
-          {/* Leaderboard Table */}
-          <div className="bg-transparent rounded-lg p-6 backdrop-blur-sm border-2 border-red-400/70 shadow-2xl">
+          {/* Enhanced Leaderboard Table */}
+          <div className="bg-transparent rounded-lg p-6 backdrop-blur-sm border-2 border-red-400/70 shadow-2xl hover:border-red-400/90 transition-all duration-300">
             {/* Table Header */}
-            <div className="grid grid-cols-3 gap-4 mb-4 pb-3 border-b-2 border-red-400/70">
+            <div className="grid grid-cols-4 gap-4 mb-4 pb-3 border-b-2 border-red-400/70">
               <div className="text-center">
-                <span className="text-red-200 font-bold text-xl">RANK</span>
+                <span className="text-red-200 font-bold text-xl drop-shadow-md">RANK</span>
+              </div>
+              <div className="text-center col-span-2">
+                <span className="text-red-200 font-bold text-xl drop-shadow-md">TEAM</span>
               </div>
               <div className="text-center">
-                <span className="text-red-200 font-bold text-xl">TEAM</span>
-              </div>
-              <div className="text-center">
-                <span className="text-red-200 font-bold text-xl">SCORE</span>
+                <span className="text-red-200 font-bold text-xl drop-shadow-md">SCORE</span>
               </div>
             </div>
 
-            {/* Table Rows */}
-            <div className="space-y-2">
+            {/* Enhanced Table Rows */}
+            <div className="space-y-3">
               {teams.length === 0 ? (
                 <div className="text-center py-8">
+                  <div className="text-4xl mb-3 animate-bounce">🏆</div>
                   <p className="text-red-300 font-mono text-lg">No teams registered yet</p>
                 </div>
               ) : (
                 teams.map((team, index) => {
                   const rank = index + 1;
+                  const isTopThree = rank <= 3;
+                  
                   return (
                     <div
                       key={`${team.teamName}-${index}`}
-                      className={`grid grid-cols-3 gap-4 py-3 px-2 rounded-md transition-all duration-200 hover:bg-red-100/30 ${
-                        index < 3
-                          ? "bg-yellow-200/30 border border-yellow-400/60"
-                          : "bg-white/20"
+                      className={`group grid grid-cols-4 gap-4 py-4 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg ${
+                        isTopThree
+                          ? "bg-gradient-to-r from-yellow-900/50 to-yellow-800/50 border-2 border-yellow-400/70 shadow-md hover:shadow-yellow-400/20 hover:bg-gradient-to-r hover:from-yellow-900/60 hover:to-yellow-800/60"
+                          : "bg-red-950/40 border border-red-400/50 hover:bg-red-950/60 hover:border-red-400/70"
                       }`}
                     >
-                      <div className="text-center">
-                        <span
-                          className={`font-bold text-lg ${
-                            rank === 1
-                              ? "text-yellow-400"
-                              : rank === 2
-                              ? "text-gray-300"
-                              : rank === 3
-                              ? "text-orange-400"
-                              : "text-red-100"
-                          }`}
-                        >
-                          {rank}.
-                        </span>
+                      {/* Enhanced Rank */}
+                      <div className="text-center flex items-center justify-center">
+                        <div className="flex items-center gap-2">
+                          {getRankIcon(rank) && (
+                            <span className="text-xl animate-pulse">{getRankIcon(rank)}</span>
+                          )}
+                          <span
+                            className={`font-black text-xl drop-shadow-md ${
+                              rank === 1
+                                ? "text-yellow-500"
+                                : rank === 2
+                                ? "text-gray-400"
+                                : rank === 3
+                                ? "text-orange-500"
+                                : "text-red-100"
+                            }`}
+                          >
+                            {rank}.
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-center">
-                        <span className="font-semibold text-red-100 text-lg">
+                      
+                      {/* Enhanced Team Name */}
+                      <div className="col-span-2 text-center flex items-center justify-center">
+                        <span className={`font-bold text-lg drop-shadow-sm transition-colors duration-300 ${
+                          isTopThree ? "text-red-50 group-hover:text-white" : "text-red-100 group-hover:text-red-50"
+                        }`}>
                           {team.teamName}
                         </span>
                       </div>
-                      <div className="text-center">
-                        <span className="font-bold text-red-100 text-lg">
+                      
+                      {/* Enhanced Score */}
+                      <div className="text-center flex items-center justify-center">
+                        <span className={`font-bold text-lg drop-shadow-sm transition-colors duration-300 ${
+                          isTopThree ? "text-red-50 group-hover:text-white" : "text-red-100 group-hover:text-red-50"
+                        }`}>
                           {team.points.toLocaleString()}
                         </span>
                       </div>
+
+                      {/* Subtle hover glow effect */}
+                      <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-20 bg-gradient-to-r from-red-400 to-yellow-400 transition-opacity duration-300 pointer-events-none"></div>
                     </div>
                   );
                 })
@@ -185,18 +222,27 @@ const LeaderboardPage = () => {
             </div>
           </div>
 
-          {/* Bottom decoration - small flags */}
+          {/* Enhanced bottom decoration */}
           <div className="flex justify-between items-end mt-8">
-            <div className="text-red-500 text-2xl">🚩</div>
-            <div className="text-red-500 text-2xl">🚩</div>
+            <div className="text-red-500 text-2xl transform hover:scale-125 transition-transform duration-300 cursor-pointer">🚩</div>
+            <div className="text-center">
+              <div className="text-red-300/60 font-mono text-xs">
+                Last Updated: {new Date().toLocaleTimeString()}
+              </div>
+            </div>
+            <div className="text-red-500 text-2xl transform hover:scale-125 transition-transform duration-300 cursor-pointer">🚩</div>
           </div>
         </div>
-        {/* Refresh Button */}
+
+        {/* Enhanced Refresh Button */}
         <button
           onClick={() => window.location.reload()}
-          className="absolute top-6 right-6 px-4 py-2 bg-black/60 backdrop-blur-sm border border-red-500/30 rounded-lg hover:bg-red-900/30 hover:border-red-400/50 transition-all duration-300 text-red-400 hover:text-red-300 font-mono font-semibold"
+          className="absolute top-6 right-6 group px-6 py-3 bg-black/60 backdrop-blur-sm border border-red-500/40 rounded-lg hover:bg-red-900/40 hover:border-red-400/70 transition-all duration-300 text-red-400 hover:text-red-300 font-mono font-semibold shadow-lg transform hover:scale-105"
         >
-          REFRESH
+          <div className="flex items-center gap-2">
+            <span className="group-hover:animate-spin transition-transform duration-300">🔄</span>
+            <span>REFRESH</span>
+          </div>
         </button>
       </div>
     </div>
