@@ -339,15 +339,9 @@ export default function QuestionsPage() {
             </h1>
             <div className="flex justify-center items-center gap-6 mb-4">
               <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-6 py-3 rounded font-poppins text-green-200">
-                <span className="mr-2">🏆</span>Total Points: {serverPoints}
+                <span className="mr-1">Total Points: {serverPoints}</span>
               </span>
-              <button 
-                onClick={handleRefreshFromServer}
-                disabled={isLoading}
-                className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-4 py-2 rounded hover:bg-blue-900/30 font-poppins text-blue-200 transition-all disabled:opacity-50"
-              >
-                🔄 {isLoading ? 'Syncing...' : 'Sync'}
-              </button>
+              
             </div>
             {error && (
               <div className="bg-red-900/50 border-2 border-red-400/50 rounded-lg p-3 max-w-md mx-auto">
@@ -362,13 +356,7 @@ export default function QuestionsPage() {
               <p className="text-2xl font-poppins text-white">
                 <span className="text-yellow-300">Progress:</span> {completedQuestions.length} / {QUESTIONS.length} completed
               </p>
-              <p className="text-lg font-poppins text-gray-300 mt-2">
-                <span className="text-cyan-300">Next Unlock:</span> {
-                  unlockedLevel > QUESTIONS.length 
-                    ? 'All Questions Completed!' 
-                    : `Question ${unlockedLevel}`
-                }
-              </p>
+              
               {serverPoints === 0 && (
                 <p className="text-sm font-poppins text-orange-300 mt-2">
                   💡 Complete questions to unlock more challenges!
