@@ -71,7 +71,7 @@ export default function Question5Page() {
       if (points >= 5) {
         setCompleted(true);
         setIsSuccess(true);
-      } else if (points < 600) {
+      } else if (points < 5) {
         // User hasn't completed previous questions, redirect them
         setError("You must complete Questions 1-4 first!");
         setTimeout(() => {

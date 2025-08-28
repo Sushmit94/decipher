@@ -71,7 +71,13 @@ export default function Question2Page() {
       if (points >= 2) {
         setCompleted(true);
         setIsSuccess(true);
-      }  else {
+      } else if (points < 2) {
+        // User hasn't completed previous questions, redirect them
+        setError("You must complete Questions 1-4 first!");
+        setTimeout(() => {
+          router.push('/questions');
+        }, 2000);
+      } else {
         setCompleted(false);
       }
     } catch (error) {

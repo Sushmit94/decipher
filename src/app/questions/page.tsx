@@ -190,8 +190,9 @@ export default function QuestionsPage() {
 
   // Listen for question completion events (for real-time updates)
   useEffect(() => {
-    const handleQuestionCompleted = async (event: CustomEvent) => {
-      const { questionId, points } = event.detail;
+    const handleQuestionCompleted = async (event: Event) => {
+  const customEvent = event as CustomEvent<{ questionId: number; points: number }>;
+  const { questionId, points } = customEvent.detail;
       
       console.log('Question completed event:', { questionId, points });
       
