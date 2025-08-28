@@ -7,7 +7,6 @@ const QUESTION_2 = {
   id: 2,
   title: "Caesar's Secret",
   difficulty: 'Easy',
-  points: 150,
   flag: "DECIPHER{julius_caesar_cipher}",
   description: "Decode the Caesar cipher to find the flag. Remember, Caesar used a shift of 3!",
   challenge: "GHFLSKHU{mxolxv_fdhvdu_flskhu}"
@@ -71,7 +70,7 @@ export default function Question2Page() {
       if (points >= 2) {
         setCompleted(true);
         setIsSuccess(true);
-      } else if (points < 2) {
+      } else if (points < 1) {
         // User hasn't completed previous questions, redirect them
         setError("You must complete Questions 1-4 first!");
         setTimeout(() => {
@@ -156,9 +155,7 @@ export default function Question2Page() {
     }
   };
 
-  const showHint = () => {
-    alert("💡 HINT: This is a Caesar cipher with a shift of 3. Each letter is shifted 3 positions forward in the alphabet!");
-  };
+  
 
   // Show loading state
   if (isLoading) {
@@ -223,9 +220,7 @@ export default function Question2Page() {
             <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-4 py-2 rounded font-mono text-green-200">
               {QUESTION_2.difficulty}
             </span>
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
-              {QUESTION_2.points} pts
-            </span>
+           
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
             </span>
@@ -243,8 +238,8 @@ export default function Question2Page() {
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">✅</span>
-            <span className="text-xl font-mono text-green-300">COMPLETED - {QUESTION_2.points} POINTS EARNED</span>
+            <span className="text-2xl mr-3">✅ Completed </span>
+            
           </div>
         )}
 
@@ -270,22 +265,6 @@ export default function Question2Page() {
               {QUESTION_2.challenge}
             </div>
             <p className="text-gray-400 text-sm mt-3 font-mono">💡 Click the cipher above to copy it to your clipboard</p>
-          </div>
-          
-          <div className="bg-purple-900/50 border-2 border-purple-400/50 rounded-lg p-6 mb-6">
-            <h4 className="text-purple-300 mb-3 text-lg font-mono">CIPHER INFO:</h4>
-            <div className="text-purple-200 font-mono space-y-2">
-              <p>• Caesar cipher shifts each letter by a fixed number</p>
-              <p>• Julius Caesar used a shift of 3 positions</p>
-              <p>• A → D, B → E, C → F, etc.</p>
-              <p>• To decode: shift back 3 positions</p>
-            </div>
-          </div>
-          
-          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
-            <p className="text-yellow-200 text-lg font-mono">
-              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{flag_text}'}
-            </p>
           </div>
         </div>
 
@@ -332,27 +311,8 @@ export default function Question2Page() {
 
         {/* Actions */}
         <div className="flex justify-center gap-6">
-          <button 
-            onClick={showHint} 
-            className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-6 py-4 rounded-lg hover:bg-purple-900/40 font-mono text-purple-200 transition-all group"
-          >
-            <span className="mr-3">💡</span>
-            <span className="group-hover:animate-pulse">GET HINT</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions/question1')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-6 py-4 rounded-lg hover:bg-blue-900/40 font-mono text-blue-200 transition-all group"
-          >
-            <span className="mr-3">⬅️</span>
-            <span className="group-hover:animate-pulse">PREV QUESTION</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-orange-400/50 hover:border-orange-300 px-6 py-4 rounded-lg hover:bg-orange-900/40 font-mono text-orange-200 transition-all group"
-          >
-            <span className="mr-3">📋</span>
-            <span className="group-hover:animate-pulse">ALL QUESTIONS</span>
-          </button>
+          
+          
           {completed && (
             <button 
               onClick={() => router.push('/questions/question3')}

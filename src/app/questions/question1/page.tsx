@@ -7,7 +7,6 @@ const QUESTION_1 = {
   id: 1,
   title: "Welcome to CTF",
   difficulty: 'Easy',
-  points: 100,
   flag: "DECIPHER{welcome_to_ctf}",
   description: "A simple Base64 decoding challenge to get you started.",
   challenge: "SGVyZSBpcyB5b3VyIGZpcnN0IGZsYWc6IERFQ0lQSEVSe3dlbGNvbWVfdG9fY3RmfQ=="
@@ -67,16 +66,10 @@ export default function Question1Page() {
       setTotalPoints(points);
       
 
-      if (points >= 1) {
+      if (points > 0) {
         setCompleted(true);
         setIsSuccess(true);
-      } else if (points < 1) {
-        // User hasn't completed previous questions, redirect them
-        setError("You must complete Questions 1-4 first!");
-        setTimeout(() => {
-          router.push('/questions');
-        }, 2000);
-      } else {
+      }  else {
         setCompleted(false);
       }
     } catch (error) {
@@ -155,9 +148,7 @@ export default function Question1Page() {
     }
   };
 
-  const showHint = () => {
-    alert("💡 HINT: This is Base64 encoded. Try decoding it!");
-  };
+ 
 
   // Show loading state
   if (isLoading) {
@@ -227,9 +218,7 @@ export default function Question1Page() {
             <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-4 py-2 rounded font-mono text-green-200">
               {QUESTION_1.difficulty}
             </span>
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
-              {QUESTION_1.points} pts
-            </span>
+           
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
             </span>
@@ -247,8 +236,7 @@ export default function Question1Page() {
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">✅</span>
-            <span className="text-xl font-mono text-green-300">COMPLETED - {QUESTION_1.points} POINTS EARNED</span>
+            <span className="text-2xl mr-3">✅ Completed </span>
           </div>
         )}
 
@@ -325,20 +313,7 @@ export default function Question1Page() {
 
         {/* Actions */}
         <div className="flex justify-center gap-6">
-          <button 
-            onClick={showHint} 
-            className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-6 py-4 rounded-lg hover:bg-purple-900/40 font-mono text-purple-200 transition-all group"
-          >
-            <span className="mr-3">💡</span>
-            <span className="group-hover:animate-pulse">GET HINT</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-orange-400/50 hover:border-orange-300 px-6 py-4 rounded-lg hover:bg-orange-900/40 font-mono text-orange-200 transition-all group"
-          >
-            <span className="mr-3">📋</span>
-            <span className="group-hover:animate-pulse">ALL QUESTIONS</span>
-          </button>
+          
           {completed && (
             <button 
               onClick={() => router.push('/questions/question2')}

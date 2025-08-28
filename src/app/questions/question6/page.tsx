@@ -123,7 +123,7 @@ export default function Question6Page() {
       <div 
         className="fixed inset-0 w-full h-full"
         style={{
-          backgroundImage: "url('/y.jpg')",
+          backgroundImage: "url('/y.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -253,27 +253,8 @@ export default function Question6Page() {
 
         {/* Actions */}
         <div className="flex justify-center gap-6">
-          <button 
-            onClick={showHint} 
-            className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-6 py-4 rounded-lg hover:bg-purple-900/40 font-mono text-purple-200 transition-all group"
-          >
-            <span className="mr-3">🔍</span>
-            <span className="group-hover:animate-pulse">ANALYSIS HINT</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions/question5')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-6 py-4 rounded-lg hover:bg-blue-900/40 font-mono text-blue-200 transition-all group"
-          >
-            <span className="mr-3">⬅️</span>
-            <span className="group-hover:animate-pulse">PREV QUESTION</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-orange-400/50 hover:border-orange-300 px-6 py-4 rounded-lg hover:bg-orange-900/40 font-mono text-orange-200 transition-all group"
-          >
-            <span className="mr-3">📋</span>
-            <span className="group-hover:animate-pulse">ALL QUESTIONS</span>
-          </button>
+        
+          
           {completed && (
             <button 
               onClick={() => router.push('/questions/question7')}

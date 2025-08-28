@@ -7,7 +7,6 @@ const QUESTION_3 = {
   id: 3,
   title: "Cipher Secret",
   difficulty: 'Easy',
-  points: 150,
   flag: "DECIPHER{M3T4D4T4_4NALY51S}",
   description: "Cipher is an amazing club, and Decipher is an amazing event! There is some data in this image, that's of great use to you, decrypt it and you win.",
   challenge: "url('/image.png')"
@@ -71,7 +70,7 @@ export default function Question3Page() {
       if (points >= 3) {
         setCompleted(true);
         setIsSuccess(true);
-      }else if (points < 3) {
+      }else if (points < 2) {
         // User hasn't completed previous questions, redirect them
         setError("You must complete Questions 1-4 first!");
         setTimeout(() => {
@@ -222,9 +221,7 @@ export default function Question3Page() {
             <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-4 py-2 rounded font-mono text-green-200">
               {QUESTION_3.difficulty}
             </span>
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
-              {QUESTION_3.points} pts
-            </span>
+           
             <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
               Total: {totalPoints} pts
             </span>
@@ -242,8 +239,8 @@ export default function Question3Page() {
         {/* Status */}
         {completed && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-green-400/70 p-6 rounded-lg mb-8 text-center animate-pulse">
-            <span className="text-2xl mr-3">✅</span>
-            <span className="text-xl font-mono text-green-300">COMPLETED - {QUESTION_3.points} POINTS EARNED</span>
+            <span className="text-2xl mr-3">✅ Completed </span>
+            
           </div>
         )}
 
@@ -268,21 +265,7 @@ export default function Question3Page() {
             </div>
           </div>
           
-          <div className="bg-purple-900/50 border-2 border-purple-400/50 rounded-lg p-6 mb-6">
-            <h4 className="text-purple-300 mb-3 text-lg font-mono">STEGANOGRAPHY INFO:</h4>
-            <div className="text-purple-200 font-mono space-y-2">
-              <p>• Hidden data might be embedded in image metadata</p>
-              <p>• Look for unusual file properties or EXIF data</p>
-              <p>• Consider using steganography analysis tools</p>
-              <p>• The flag format follows: DECIPHER{'{...}'}</p>
-            </div>
-          </div>
           
-          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
-            <p className="text-yellow-200 text-lg font-mono">
-              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{flag_text}'}
-            </p>
-          </div>
         </div>
 
         {/* Flag Submission */}
@@ -328,27 +311,9 @@ export default function Question3Page() {
 
         {/* Actions */}
         <div className="flex justify-center gap-6">
-          <button 
-            onClick={showHint} 
-            className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-6 py-4 rounded-lg hover:bg-purple-900/40 font-mono text-purple-200 transition-all group"
-          >
-            <span className="mr-3">💡</span>
-            <span className="group-hover:animate-pulse">GET HINT</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions/question2')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-6 py-4 rounded-lg hover:bg-blue-900/40 font-mono text-blue-200 transition-all group"
-          >
-            <span className="mr-3">⬅️</span>
-            <span className="group-hover:animate-pulse">PREV QUESTION</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-orange-400/50 hover:border-orange-300 px-6 py-4 rounded-lg hover:bg-orange-900/40 font-mono text-orange-200 transition-all group"
-          >
-            <span className="mr-3">📋</span>
-            <span className="group-hover:animate-pulse">ALL QUESTIONS</span>
-          </button>
+          
+         
+          
           {completed && (
             <button 
               onClick={() => router.push('/questions/question4')}

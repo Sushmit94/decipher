@@ -71,7 +71,7 @@ export default function Question5Page() {
       if (points >= 5) {
         setCompleted(true);
         setIsSuccess(true);
-      } else if (points < 5) {
+      } else if (points < 4) {
         // User hasn't completed previous questions, redirect them
         setError("You must complete Questions 1-4 first!");
         setTimeout(() => {
@@ -272,22 +272,7 @@ export default function Question5Page() {
             <p className="text-gray-400 text-sm mt-3 font-mono text-center">💡 Click the code above to copy it to your clipboard</p>
           </div>
           
-          <div className="bg-purple-900/50 border-2 border-purple-400/50 rounded-lg p-6 mb-6">
-            <h4 className="text-purple-300 mb-3 text-lg font-mono">ISBN-13 ALGORITHM INFO:</h4>
-            <div className="text-purple-200 font-mono space-y-2">
-              <p>• ISBN-13 uses a check digit algorithm for validation</p>
-              <p>• Multiply digits by alternating weights (1, 3, 1, 3, ...)</p>
-              <p>• Sum all products and find modulo 10</p>
-              <p>• Check digit = (10 - result) mod 10</p>
-              <p>• Once complete, look up the book to find the author</p>
-            </div>
-          </div>
-          
-          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
-            <p className="text-yellow-200 text-lg font-mono">
-              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{creator_surname}'}
-            </p>
-          </div>
+         
         </div>
 
         {/* Flag Submission */}
@@ -333,27 +318,8 @@ export default function Question5Page() {
 
         {/* Actions */}
         <div className="flex justify-center gap-6">
-          <button 
-            onClick={showHint} 
-            className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-6 py-4 rounded-lg hover:bg-purple-900/40 font-mono text-purple-200 transition-all group"
-          >
-            <span className="mr-3">💡</span>
-            <span className="group-hover:animate-pulse">GET HINT</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions/question4')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-6 py-4 rounded-lg hover:bg-blue-900/40 font-mono text-blue-200 transition-all group"
-          >
-            <span className="mr-3">⬅️</span>
-            <span className="group-hover:animate-pulse">PREV QUESTION</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-orange-400/50 hover:border-orange-300 px-6 py-4 rounded-lg hover:bg-orange-900/40 font-mono text-orange-200 transition-all group"
-          >
-            <span className="mr-3">📋</span>
-            <span className="group-hover:animate-pulse">ALL QUESTIONS</span>
-          </button>
+          
+          
           {completed && (
             <button 
               onClick={() => router.push('/questions/question6')}

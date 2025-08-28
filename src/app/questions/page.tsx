@@ -81,7 +81,33 @@ const QUESTIONS = [
     points: 600,
     flag: "DECIPHER{final_boss_defeated}",
     description: "The ultimate challenge awaits the worthy."
-  }
+  },
+  {
+    id: 10,
+    title: "Final Challenge",
+    difficulty: "Hard",
+    points: 600,
+    flag: "DECIPHER{final_boss_defeated}",
+    description: "The ultimate challenge awaits the worthy."
+  },
+  {
+    id: 11,
+    title: "Final Challenge",
+    difficulty: "Hard",
+    points: 600,
+    flag: "DECIPHER{final_boss_defeated}",
+    description: "The ultimate challenge awaits the worthy."
+  },
+  {
+    id: 12,
+    title: "Final Challenge",
+    difficulty: "Hard",
+    points: 600,
+    flag: "DECIPHER{final_boss_defeated}",
+    description: "The ultimate challenge awaits the worthy."
+  },
+  
+
 ];
 
 export default function QuestionsPage() {

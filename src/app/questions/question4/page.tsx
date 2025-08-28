@@ -70,7 +70,7 @@ export default function Question4Page() {
       if (points >= 4) {
         setCompleted(true);
         setIsSuccess(true);
-      }else if (points < 4) {
+      }else if (points < 3) {
         // User hasn't completed previous questions, redirect them
         setError("You must complete Questions 1-4 first!");
         setTimeout(() => {
@@ -282,11 +282,7 @@ export default function Question4Page() {
             </div>
           </div>
           
-          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
-            <p className="text-yellow-200 text-lg font-mono">
-              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{flag_text}'}
-            </p>
-          </div>
+          
         </div>
 
         {/* Flag Submission */}
@@ -332,27 +328,8 @@ export default function Question4Page() {
 
         {/* Actions */}
         <div className="flex justify-center gap-6">
-          <button 
-            onClick={showHint} 
-            className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-6 py-4 rounded-lg hover:bg-purple-900/40 font-mono text-purple-200 transition-all group"
-          >
-            <span className="mr-3">💡</span>
-            <span className="group-hover:animate-pulse">GET HINT</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions/question3')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-6 py-4 rounded-lg hover:bg-blue-900/40 font-mono text-blue-200 transition-all group"
-          >
-            <span className="mr-3">⬅️</span>
-            <span className="group-hover:animate-pulse">PREV QUESTION</span>
-          </button>
-          <button 
-            onClick={() => router.push('/questions')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-orange-400/50 hover:border-orange-300 px-6 py-4 rounded-lg hover:bg-orange-900/40 font-mono text-orange-200 transition-all group"
-          >
-            <span className="mr-3">📋</span>
-            <span className="group-hover:animate-pulse">ALL QUESTIONS</span>
-          </button>
+          
+          
           {completed && (
             <button 
               onClick={() => router.push('/questions/question5')}
