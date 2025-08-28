@@ -290,7 +290,7 @@ export default function QuestionsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <div className="text-white text-xl font-mono">Loading...</div>
+        <div className="text-white text-xl font-poppins">Loading...</div>
       </div>
     );
   }
@@ -300,10 +300,10 @@ export default function QuestionsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="text-center">
-          <div className="text-red-400 text-xl font-mono mb-4">Error: {error}</div>
+          <div className="text-red-400 text-xl font-poppins mb-4">Error: {error}</div>
           <button 
             onClick={handleRefreshFromServer}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-mono px-6 py-2 rounded"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-poppins px-6 py-2 rounded"
           >
             Retry
           </button>
@@ -334,24 +334,24 @@ export default function QuestionsPage() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-5xl font-bold font-mono text-orange-400 mb-6">
-              <span className="text-orange-300">[</span> DECIPHER CTF <span className="text-orange-300">]</span>
+            <h1 className="text-5xl font-bold font-poppins text-orange-400 mb-6">
+              <span className="text-orange-300">[</span> DECIPHER <span className="text-orange-300">]</span>
             </h1>
             <div className="flex justify-center items-center gap-6 mb-4">
-              <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-6 py-3 rounded font-mono text-green-200">
+              <span className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 px-6 py-3 rounded font-poppins text-green-200">
                 <span className="mr-2">🏆</span>Total Points: {serverPoints}
               </span>
               <button 
                 onClick={handleRefreshFromServer}
                 disabled={isLoading}
-                className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-4 py-2 rounded hover:bg-blue-900/30 font-mono text-blue-200 transition-all disabled:opacity-50"
+                className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-4 py-2 rounded hover:bg-blue-900/30 font-poppins text-blue-200 transition-all disabled:opacity-50"
               >
                 🔄 {isLoading ? 'Syncing...' : 'Sync'}
               </button>
             </div>
             {error && (
               <div className="bg-red-900/50 border-2 border-red-400/50 rounded-lg p-3 max-w-md mx-auto">
-                <p className="text-red-200 font-mono text-sm">⚠️ {error}</p>
+                <p className="text-red-200 font-poppins text-sm">⚠️ {error}</p>
               </div>
             )}
           </div>
@@ -359,10 +359,10 @@ export default function QuestionsPage() {
           {/* Progress */}
           <div className="text-center mb-8">
             <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-6 inline-block">
-              <p className="text-2xl font-mono text-white">
+              <p className="text-2xl font-poppins text-white">
                 <span className="text-yellow-300">Progress:</span> {completedQuestions.length} / {QUESTIONS.length} completed
               </p>
-              <p className="text-lg font-mono text-gray-300 mt-2">
+              <p className="text-lg font-poppins text-gray-300 mt-2">
                 <span className="text-cyan-300">Next Unlock:</span> {
                   unlockedLevel > QUESTIONS.length 
                     ? 'All Questions Completed!' 
@@ -370,7 +370,7 @@ export default function QuestionsPage() {
                 }
               </p>
               {serverPoints === 0 && (
-                <p className="text-sm font-mono text-orange-300 mt-2">
+                <p className="text-sm font-poppins text-orange-300 mt-2">
                   💡 Complete questions to unlock more challenges!
                 </p>
               )}
@@ -396,7 +396,7 @@ export default function QuestionsPage() {
                   }`}
                 >
                   <div className="flex justify-between items-start mb-4">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold font-mono border-2 ${
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold font-poppins border-2 ${
                       completed ? 
                         'bg-green-900/50 border-green-400/70 text-green-200' : 
                       unlocked ? 
@@ -405,7 +405,7 @@ export default function QuestionsPage() {
                     }`}>
                       {completed ? '✓' : question.id}
                     </div>
-                    <span className={`px-3 py-1 rounded font-mono text-sm border-2 ${
+                    <span className={`px-3 py-1 rounded font-poppins text-sm border-2 ${
                       question.difficulty === 'Easy' ? 
                         'bg-green-900/50 border-green-400/50 text-green-200' :
                       question.difficulty === 'Medium' ? 
@@ -416,11 +416,11 @@ export default function QuestionsPage() {
                     </span>
                   </div>
                   
-                  <h3 className="text-xl font-bold mb-3 font-mono text-white">{question.title}</h3>
-                  <p className="text-sm text-gray-300 mb-6 font-mono leading-relaxed">{question.description}</p>
+                  <h3 className="text-xl font-bold mb-3 font-poppins text-white">{question.title}</h3>
+                  <p className="text-sm text-gray-300 mb-6 font-poppins leading-relaxed">{question.description}</p>
                   
                   <div className="flex justify-between items-center">
-                    <span className={`text-sm font-mono flex items-center ${
+                    <span className={`text-sm font-poppins flex items-center ${
                       completed ? 'text-green-300' : unlocked ? 'text-blue-300' : 'text-gray-400'
                     }`}>
                       <span className="mr-2">
@@ -428,7 +428,7 @@ export default function QuestionsPage() {
                       </span>
                       {completed ? 'COMPLETED' : unlocked ? 'AVAILABLE' : 'LOCKED'}
                     </span>
-                    <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
+                    <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-poppins text-yellow-200">
                       {question.points} pt
                     </span>
                   </div>

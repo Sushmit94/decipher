@@ -179,7 +179,7 @@ function Question9Page() {
           <div className="max-w-4xl mx-auto flex items-center justify-center min-h-screen">
             <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400 mx-auto mb-4"></div>
-              <p className="text-xl font-mono text-green-200">Loading question status...</p>
+              <p className="text-xl font-poppins text-green-200">Loading question status...</p>
             </div>
           </div>
         </div>
@@ -211,18 +211,18 @@ function Question9Page() {
         <div className="flex justify-between items-center mb-8">
           <button 
             onClick={() => router.push('/questions')}
-            className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-6 py-3 rounded hover:bg-green-900/30 font-mono text-green-200 transition-all group"
+            className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-6 py-3 rounded hover:bg-green-900/30 font-poppins text-green-200 transition-all group"
           >
             <span className="mr-2">&lt;&lt;</span>
             <span className="group-hover:animate-pulse">BACK TO QUESTIONS</span>
           </button>
-          <h1 className="text-4xl font-bold font-mono text-orange-400">
+          <h1 className="text-4xl font-bold font-poppins text-orange-400">
             <span className="text-orange-300">[</span> QUESTION {QUESTION_9.id} <span className="text-orange-300">]</span>
           </h1>
           <div className="flex gap-4">
            
             
-            <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
+            <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-poppins text-cyan-200">
               Total: {totalPoints} pts
             </span>
           </div>
@@ -232,7 +232,7 @@ function Question9Page() {
         {error && (
           <div className="bg-black/50 backdrop-blur-sm border-2 border-red-400/70 p-6 rounded-lg mb-8 text-center">
             <span className="text-2xl mr-3">❌</span>
-            <span className="text-xl font-mono text-red-300">ERROR: {error}</span>
+            <span className="text-xl font-poppins text-red-300">ERROR: {error}</span>
           </div>
         )}
 
@@ -247,17 +247,17 @@ function Question9Page() {
 
         {/* Question Content */}
         <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 mb-8">
-          <h2 className="text-3xl font-bold mb-6 font-mono text-white">{QUESTION_9.title}</h2>
-          <p className="mb-8 text-lg text-gray-200 font-mono leading-relaxed">{QUESTION_9.description}</p>
+          <h2 className="text-3xl font-bold mb-6 font-poppins text-white">{QUESTION_9.title}</h2>
+          <p className="mb-8 text-lg text-gray-200 font-poppins leading-relaxed">{QUESTION_9.description}</p>
           
           {/* Challenge URL */}
           <div className="bg-black/60 border-2 border-blue-400/50 rounded-lg p-6 mb-6">
-            <h3 className="text-blue-300 mb-4 text-xl font-mono flex items-center">
+            <h3 className="text-blue-300 mb-4 text-xl font-poppins flex items-center">
               <span className="mr-3 text-2xl">🔐</span>
               CHALLENGE URL:
             </h3>
             <div 
-              className="font-mono text-green-400 text-xl break-all cursor-pointer select-all bg-black/60 p-6 rounded border-2 border-green-400/30 hover:border-green-300/60 transition-all text-center"
+              className="font-poppins text-green-400 text-xl break-all cursor-pointer select-all bg-black/60 p-6 rounded border-2 border-green-400/30 hover:border-green-300/60 transition-all text-center"
               onClick={() => {
                 navigator.clipboard.writeText(QUESTION_9.challengeUrl);
                 alert('📋 URL copied to clipboard!');
@@ -266,14 +266,14 @@ function Question9Page() {
             >
               {QUESTION_9.challengeUrl}
             </div>
-            <p className="text-gray-400 text-sm mt-3 font-mono text-center">💡 Click the URL above to copy it to your clipboard</p>
+            <p className="text-gray-400 text-sm mt-3 font-poppins text-center">💡 Click the URL above to copy it to your clipboard</p>
           </div>
           
           {/* Interactive Challenge Button */}
           <div className="text-center mb-6">
             <button
               onClick={openChallenge}
-              className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-8 py-4 rounded-lg hover:bg-purple-900/40 font-mono text-purple-200 transition-all group text-xl"
+              className="bg-black/70 backdrop-blur-sm border-2 border-purple-400/50 hover:border-purple-300 px-8 py-4 rounded-lg hover:bg-purple-900/40 font-poppins text-purple-200 transition-all group text-xl"
             >
               <span className="mr-3 text-2xl">🚪</span>
               <span className="group-hover:animate-pulse">OPEN CHALLENGE SITE</span>
@@ -283,7 +283,7 @@ function Question9Page() {
 
         {/* Flag Submission */}
         <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-6 mb-8">
-          <label className="block text-white font-mono text-xl mb-4 flex items-center">
+          <label className="block text-white font-poppins text-xl mb-4 flex items-center">
             <span className="mr-3 text-2xl">🚩</span>
             SUBMIT YOUR FLAG:
           </label>
@@ -296,12 +296,12 @@ function Question9Page() {
                 onChange={(e) => setFlagInput(e.target.value)}
                 placeholder="DECIPHER{flag_here}"
                 disabled={isSubmitting || completed}
-                className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all disabled:opacity-50"
+                className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-poppins text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all disabled:opacity-50"
               />
               <button
                 type="submit"
                 disabled={isSubmitting || completed}
-                className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-mono text-green-200 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-poppins text-green-200 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="mr-2">🚀</span>
                 <span className="group-hover:animate-pulse">
@@ -314,7 +314,7 @@ function Question9Page() {
 
         {/* Message */}
         {message && (
-          <div className={`p-6 rounded-lg text-center mb-8 backdrop-blur-sm border-2 transition-all duration-300 font-mono text-lg ${
+          <div className={`p-6 rounded-lg text-center mb-8 backdrop-blur-sm border-2 transition-all duration-300 font-poppins text-lg ${
             isSuccess ? 'bg-black/50 border-green-400/70 text-green-200' : 'bg-black/50 border-red-400/70 text-red-200'
           }`}>
             <div className="font-bold">{message}</div>
@@ -327,7 +327,7 @@ function Question9Page() {
           {completed && (
             <button 
               onClick={() => router.push('/questions/question10')}
-              className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 hover:border-cyan-300 px-6 py-4 rounded-lg hover:bg-cyan-900/40 font-mono text-cyan-200 transition-all group animate-pulse"
+              className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 hover:border-cyan-300 px-6 py-4 rounded-lg hover:bg-cyan-900/40 font-poppins text-cyan-200 transition-all group animate-pulse"
             >
               <span className="mr-3">➡️</span>
               <span className="group-hover:animate-pulse">NEXT QUESTION</span>
