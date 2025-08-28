@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/lib/axios";
 
 const QUESTION_6 = {
   id: 6,
@@ -17,51 +18,79 @@ export default function Question6Page() {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     
     if (flagInput.trim() === QUESTION_6.flag) {
       if (!completed) {
-        setCompleted(true);
-        setMessage(`Correct! You earned ${QUESTION_6.points} points! You've already begun your journey as a hacker!`);
-        setIsSuccess(true);
-        
-        // Save completion to localStorage
-        const completedQuestions = JSON.parse(localStorage.getItem('completedQuestions') || '[]');
-        if (!completedQuestions.includes(QUESTION_6.id)) {
-          completedQuestions.push(QUESTION_6.id);
-          localStorage.setItem('completedQuestions', JSON.stringify(completedQuestions));
-          
-          // Update total score
-          const currentScore = parseInt(localStorage.getItem('totalScore') || '0');
-          localStorage.setItem('totalScore', (currentScore + QUESTION_6.points).toString());
-          
-          // Update unlocked level
-          const currentUnlocked = parseInt(localStorage.getItem('unlockedLevel') || '1');
-          localStorage.setItem('unlockedLevel', Math.max(currentUnlocked, QUESTION_6.id + 1).toString());
-        }
-        
-        // Dispatch event to notify questions page
-        const event = new CustomEvent('questionCompleted', {
-          detail: {
-            questionId: QUESTION_6.id,
-            points: QUESTION_6.points
+        setIsSubmitting(true);
+        try {
+          const response = await api.post("/api/v1/register/add-points", {});
+          // Check if response is successful
+          if (response.data.success) {
+            setCompleted(true);
+            setMessage(`Correct! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. You've already begun your journey as a hacker!`);
+            setIsSuccess(true);
+            
+            // Dispatch event to notify questions page
+            const event = new CustomEvent('questionCompleted', {
+              detail: {
+                questionId: QUESTION_6.id,
+                points: response.data.data.pointsAdded,
+                totalPoints: response.data.data.points
+              }
+            });
+            window.dispatchEvent(event);
+            
+            // Auto-navigate to next question after 3 seconds (if question7 exists)
+            setTimeout(() => {
+              router.push('/questions/question7');
+            }, 3000);
+            
+          } else {
+            throw new Error(response.data.message || "Failed to add points");
           }
-        });
-        window.dispatchEvent(event);
+          
+        } catch (error: any) {
+          console.error("Error adding points:", error);
+          
+          // Check if it's an authentication error
+          if (error.response?.status === 401) {
+            setMessage("Authentication failed. Please log in again.");
+            setIsSuccess(false);
+            
+          } else {
+            const errorMessage = error.response?.data?.message || 
+                               error.message || 
+                               "Failed to submit answer. Please try again.";
+            setMessage(errorMessage);
+            setIsSuccess(false);
+          }
+          
+          // Clear error message after 5 seconds
+          setTimeout(() => setMessage(""), 5000);
+          
+        } finally {
+          setIsSubmitting(false);
+        }
         
       } else {
         setMessage("Already completed! You are truly a steganography master!");
         setIsSuccess(true);
+        
+        // Navigate to next question
+        setTimeout(() => {
+          router.push('/questions/question7');
+        }, 1500);
       }
     } else {
       setMessage("Incorrect flag. The secret is still hidden!");
       setIsSuccess(false);
-    }
-    
-    if (!isSuccess || flagInput.trim() !== QUESTION_6.flag) {
+      
+      // Clear message after 3 seconds for incorrect answers
       setTimeout(() => setMessage(""), 3000);
     }
   };
@@ -181,9 +210,6 @@ export default function Question6Page() {
               </button>
             </div>
           </div>
-          
-          {/* Steganography Info */}
-       
         </div>
 
         {/* Flag Submission */}
@@ -192,25 +218,28 @@ export default function Question6Page() {
             <span className="mr-3 text-2xl">🚩</span>
             SUBMIT YOUR FLAG:
           </label>
-          <div>
+          <form onSubmit={handleSubmit}>
             <div className="flex gap-4">
               <input
                 type="text"
                 value={flagInput}
                 onChange={(e) => setFlagInput(e.target.value)}
                 placeholder="DECIPHER{hidden_flag_here}"
-                className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all"
-                onKeyPress={(e) => e.key === 'Enter' && handleSubmit(e)}
+                disabled={isSubmitting}
+                className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all disabled:opacity-50"
               />
               <button
-                onClick={handleSubmit}
-                className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-mono text-green-200 transition-all group"
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-mono text-green-200 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="mr-2">🔓</span>
-                <span className="group-hover:animate-pulse">REVEAL SECRET</span>
+                <span className="group-hover:animate-pulse">
+                  {isSubmitting ? 'SUBMITTING...' : 'REVEAL SECRET'}
+                </span>
               </button>
             </div>
-          </div>
+          </form>
         </div>
 
         {/* Message */}

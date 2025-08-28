@@ -1,32 +1,41 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000",
-  timeout: 10000,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+  withCredentials: true, // This is crucial - it includes cookies in requests
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
-  withCredentials: true, 
+  timeout: 10000, // 10 second timeout
 });
 
-
-api.interceptors.response.use(
-  (response) => response,
+// Request interceptor
+api.interceptors.request.use(
+  (config) => {
+    // You can add auth tokens here if needed
+    return config;
+  },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Handle common errors
     if (error.response?.status === 401) {
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
+      // Clear localStorage on auth errors
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('completedQuestions');
+        localStorage.removeItem('totalScore');
+        localStorage.removeItem('unlockedLevel');
+        // Redirect to login - you might want to handle this in components instead
       }
     }
-
-    if (error.response?.status === 403) {
-      console.error("Access forbidden");
-    }
-
-    if (error.response?.status >= 500) {
-      console.error("Server error:", error.response.data);
-    }
-
     return Promise.reject(error);
   }
 );

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/lib/axios";
 
 const QUESTION_8 = {
   id: 8,
@@ -17,52 +18,80 @@ export default function Question8Page() {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (flagInput.trim() === QUESTION_8.flag) {
       if (!completed) {
-        setCompleted(true);
-        setMessage(`Outstanding audio analysis! You earned ${QUESTION_8.points} points! You've mastered the art of audio forensics!`);
-        setIsSuccess(true);
-        
-        // Save completion to localStorage
-        const completedQuestions = JSON.parse(localStorage.getItem('completedQuestions') || '[]');
-        if (!completedQuestions.includes(QUESTION_8.id)) {
-          completedQuestions.push(QUESTION_8.id);
-          localStorage.setItem('completedQuestions', JSON.stringify(completedQuestions));
+        setIsSubmitting(true);
+        try {
+          const response = await api.post("/api/v1/register/add-points", {});
+          // Check if response is successful
+          if (response.data.success) {
+            setCompleted(true);
+            setMessage(`Outstanding audio analysis! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. You've mastered the art of audio forensics!`);
+            setIsSuccess(true);
+            
+            // Dispatch event to notify questions page
+            const event = new CustomEvent('questionCompleted', {
+              detail: {
+                questionId: QUESTION_8.id,
+                points: response.data.data.pointsAdded,
+                totalPoints: response.data.data.points
+              }
+            });
+            window.dispatchEvent(event);
+            
+            // Auto-navigate to next question after 3 seconds
+            setTimeout(() => {
+              router.push('/questions/question9');
+            }, 3000);
+            
+          } else {
+            throw new Error(response.data.message || "Failed to add points");
+          }
           
-          // Update total score
-          const currentScore = parseInt(localStorage.getItem('totalScore') || '0');
-          localStorage.setItem('totalScore', (currentScore + QUESTION_8.points).toString());
+        } catch (error: any) {
+          console.error("Error adding points:", error);
           
-          // Update unlocked level
-          const currentUnlocked = parseInt(localStorage.getItem('unlockedLevel') || '1');
-          localStorage.setItem('unlockedLevel', Math.max(currentUnlocked, QUESTION_8.id + 1).toString());
+          // Check if it's an authentication error
+          if (error.response?.status === 401) {
+            setMessage("Authentication failed. Please log in again.");
+            setIsSuccess(false);
+            
+          } else {
+            const errorMessage = error.response?.data?.message || 
+                               error.message || 
+                               "Failed to submit answer. Please try again.";
+            setMessage(errorMessage);
+            setIsSuccess(false);
+          }
+          
+          // Clear error message after 5 seconds
+          setTimeout(() => setMessage(""), 5000);
+          
+        } finally {
+          setIsSubmitting(false);
         }
         
-        // Dispatch event to notify questions page
-        const event = new CustomEvent('questionCompleted', {
-          detail: {
-            questionId: QUESTION_8.id,
-            points: QUESTION_8.points
-          }
-        });
-        window.dispatchEvent(event);
-        
       } else {
-        setMessage("Already completed! You are truly an audio forensics expert!");
+        setMessage("Already completed! You are truly an audio forensics expert! Redirecting to next question...");
         setIsSuccess(true);
+        
+        // Navigate to next question
+        setTimeout(() => {
+          router.push('/questions/question9');
+        }, 1500);
       }
     } else {
       setMessage("Incorrect flag. The frequencies still hold their secrets!");
       setIsSuccess(false);
-    }
-    
-    if (!isSuccess || flagInput.trim() !== QUESTION_8.flag) {
+      
+      // Clear message after 3 seconds for incorrect answers
       setTimeout(() => setMessage(""), 3000);
     }
   };
@@ -210,9 +239,12 @@ export default function Question8Page() {
             </div>
           </div>
           
-         
-
-         </div>
+          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
+            <p className="text-yellow-200 text-lg font-mono">
+              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{flag_text}'}
+            </p>
+          </div>
+        </div>
 
         {/* Flag Submission */}
         <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-6 mb-8">
@@ -220,25 +252,28 @@ export default function Question8Page() {
             <span className="mr-3 text-2xl">🚩</span>
             SUBMIT DISCOVERED FREQUENCY:
           </label>
-          <div>
+          <form onSubmit={handleSubmit}>
             <div className="flex gap-4">
               <input
                 type="text"
                 value={flagInput}
                 onChange={(e) => setFlagInput(e.target.value)}
                 placeholder="DECIPHER{hidden_in_spectrum}"
-                className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all"
-                onKeyPress={(e) => e.key === 'Enter' && handleSubmit(e)}
+                disabled={isSubmitting}
+                className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all disabled:opacity-50"
               />
               <button
-                onClick={handleSubmit}
-                className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-mono text-green-200 transition-all group"
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-mono text-green-200 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="mr-2">🔊</span>
-                <span className="group-hover:animate-pulse">DECODE SIGNAL</span>
+                <span className="group-hover:animate-pulse">
+                  {isSubmitting ? 'SUBMITTING...' : 'DECODE SIGNAL'}
+                </span>
               </button>
             </div>
-          </div>
+          </form>
         </div>
 
         {/* Message */}

@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/lib/axios";
 
 const QUESTION_3 = {
   id: 3,
@@ -9,7 +10,7 @@ const QUESTION_3 = {
   points: 150,
   flag: "DECIPHER{M3T4D4T4_4NALY51S}",
   description: "Cipher is an amazing club, and Decipher is an amazing event! There is some data in this image, that's of great use to you, decrypt it and you win.",
-  challenge: "url('/image.png')" // Placeholder for image with hidden data
+  challenge: "url('/image.png')"
 };
 
 export default function Question3Page() {
@@ -17,76 +18,167 @@ export default function Question3Page() {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [totalPoints, setTotalPoints] = useState(0);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Function to fetch total points
+  const fetchTotalPoints = async () => {
+    try {
+      const response = await api.get('/api/v1/register/get-points');
+      
+      console.log("API Response status:", response.status);
+      console.log("API Response data:", response.data);
+
+      // Handle both response formats
+      if (response.data.success && typeof response.data.data?.points === 'number') {
+        return response.data.data.points;
+      } else if (typeof response.data.points === 'number') {
+        // Handle direct points response format
+        return response.data.points;
+      }
+
+      throw new Error('Invalid response format');
+    } catch (error: any) {
+      console.error('Error fetching points:', error);
+      
+      // Check if it's an authentication error
+      if (error.response?.status === 401) {
+        // Redirect to login if not authenticated
+        router.push('/login');
+        return 0;
+      }
+      
+      const errorMessage = error.response?.data?.message || 
+                         error.message || 
+                         'Failed to fetch points';
+      setError(errorMessage);
+      return 0;
+    }
+  };
+
+  // Check if question is already completed based on points
+  const checkQuestionCompletion = async () => {
+    setIsLoading(true);
+    try {
+      const points = await fetchTotalPoints();
+      setTotalPoints(points);
+      
+      // Question 3 requires 100 (Q1) + 150 (Q2) + 150 (Q3) = 400 total points
+      // If points >= 400, then question 3 is already solved
+      if (points >= 3) {
+        setCompleted(true);
+        setIsSuccess(true);
+      } else {
+        setCompleted(false);
+      }
+    } catch (error) {
+      console.error('Error checking question completion:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Check completion status on component mount
+  useEffect(() => {
+    checkQuestionCompletion();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (flagInput.trim() === QUESTION_3.flag) {
-      if (!completed) {
-        setCompleted(true);
-        setMessage(`Correct! You earned ${QUESTION_3.points} points! Redirecting to next question...`);
-        setIsSuccess(true);
-        
-        // Save completion to localStorage
-        const completedQuestions = JSON.parse(localStorage.getItem('completedQuestions') || '[]');
-        if (!completedQuestions.includes(QUESTION_3.id)) {
-          completedQuestions.push(QUESTION_3.id);
-          localStorage.setItem('completedQuestions', JSON.stringify(completedQuestions));
+      setIsSubmitting(true);
+      try {
+        const response = await api.post("/api/v1/register/add-points", {});
+        // Check if response is successful
+        if (response.data.success) {
+          setCompleted(true);
+          setTotalPoints(response.data.data.points);
+          setMessage(`Correct! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. Redirecting...`);
+          setIsSuccess(true);
           
-          // Update total score
-          const currentScore = parseInt(localStorage.getItem('totalScore') || '0');
-          localStorage.setItem('totalScore', (currentScore + QUESTION_3.points).toString());
+          // Dispatch event to notify questions page
+          const event = new CustomEvent('questionCompleted', {
+            detail: {
+              questionId: QUESTION_3.id,
+              points: response.data.data.pointsAdded,
+              totalPoints: response.data.data.points
+            }
+          });
+          window.dispatchEvent(event);
           
-          // Update unlocked level
-          const currentUnlocked = parseInt(localStorage.getItem('unlockedLevel') || '1');
-          localStorage.setItem('unlockedLevel', Math.max(currentUnlocked, QUESTION_3.id + 1).toString());
+          // Auto-navigate to next question after 3 seconds
+          setTimeout(() => {
+            router.push('/questions/question4');
+          }, 3000);
+          
+        } else {
+          throw new Error(response.data.message || "Failed to add points");
         }
         
-        // Dispatch event to notify questions page
-        const event = new CustomEvent('questionCompleted', {
-          detail: {
-            questionId: QUESTION_3.id,
-            points: QUESTION_3.points
-          }
-        });
-        window.dispatchEvent(event);
+      } catch (error: any) {
+        console.error("Error adding points:", error);
         
-        // Auto-navigate to next question after 2 seconds
-        setTimeout(() => {
-          router.push('/questions/question4');
-        }, 2000);
+        // Check if it's an authentication error
+        if (error.response?.status === 401) {
+          setMessage("Authentication failed. Please log in again.");
+          setIsSuccess(false);
+        } else {
+          const errorMessage = error.response?.data?.message || 
+                             error.message || 
+                             "Failed to submit answer. Please try again.";
+          setMessage(errorMessage);
+          setIsSuccess(false);
+        }
         
-      } else {
-        setMessage("Already completed! Redirecting to next question...");
-        setIsSuccess(true);
+        // Clear error message after 5 seconds
+        setTimeout(() => setMessage(""), 5000);
         
-        // Navigate to next question
-        setTimeout(() => {
-          router.push('/questions/question4');
-        }, 1500);
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       setMessage("Incorrect flag. Try again!");
       setIsSuccess(false);
-    }
-    
-    if (!isSuccess || flagInput.trim() !== QUESTION_3.flag) {
+      
+      // Clear message after 3 seconds for incorrect answers
       setTimeout(() => setMessage(""), 3000);
     }
   };
 
   const showHint = () => {
-    alert("Hint: Look closely at the image file properties, metadata, or try steganography tools. The data might be hidden in the image itself!");
+    alert("💡 HINT: Look closely at the image file properties, metadata, or try steganography tools. The data might be hidden in the image itself!");
   };
 
-  // Check if already completed on component mount
-  React.useEffect(() => {
-    const completedQuestions = JSON.parse(localStorage.getItem('completedQuestions') || '[]');
-    if (completedQuestions.includes(QUESTION_3.id)) {
-      setCompleted(true);
-    }
-  }, []);
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <div 
+          className="fixed inset-0 w-full h-full"
+          style={{
+            backgroundImage: "url('/y.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            zIndex: -2
+          }}
+        ></div>
+        <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+        <div className="relative z-10 text-white p-8">
+          <div className="max-w-4xl mx-auto flex items-center justify-center min-h-screen">
+            <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400 mx-auto mb-4"></div>
+              <p className="text-xl font-mono text-green-200">Loading question status...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -94,7 +186,7 @@ export default function Question3Page() {
       <div 
         className="fixed inset-0 w-full h-full"
         style={{
-          backgroundImage: "url('/y.jpg')",
+          backgroundImage: "url('/y.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -127,8 +219,19 @@ export default function Question3Page() {
             <span className="bg-black/70 backdrop-blur-sm border-2 border-yellow-400/50 px-4 py-2 rounded font-mono text-yellow-200">
               {QUESTION_3.points} pts
             </span>
+            <span className="bg-black/70 backdrop-blur-sm border-2 border-cyan-400/50 px-4 py-2 rounded font-mono text-cyan-200">
+              Total: {totalPoints} pts
+            </span>
           </div>
         </div>
+
+        {/* Error Display */}
+        {error && (
+          <div className="bg-black/50 backdrop-blur-sm border-2 border-red-400/70 p-6 rounded-lg mb-8 text-center">
+            <span className="text-2xl mr-3">❌</span>
+            <span className="text-xl font-mono text-red-300">ERROR: {error}</span>
+          </div>
+        )}
 
         {/* Status */}
         {completed && (
@@ -158,6 +261,22 @@ export default function Question3Page() {
               <p className="text-sm text-gray-300 font-mono mt-4">Right-click and save the image, then analyze it for hidden data!</p>
             </div>
           </div>
+          
+          <div className="bg-purple-900/50 border-2 border-purple-400/50 rounded-lg p-6 mb-6">
+            <h4 className="text-purple-300 mb-3 text-lg font-mono">STEGANOGRAPHY INFO:</h4>
+            <div className="text-purple-200 font-mono space-y-2">
+              <p>• Hidden data might be embedded in image metadata</p>
+              <p>• Look for unusual file properties or EXIF data</p>
+              <p>• Consider using steganography analysis tools</p>
+              <p>• The flag format follows: DECIPHER{'{...}'}</p>
+            </div>
+          </div>
+          
+          <div className="bg-yellow-900/50 border-2 border-yellow-400/50 rounded-lg p-6">
+            <p className="text-yellow-200 text-lg font-mono">
+              <span className="text-yellow-300 font-bold">FLAG FORMAT:</span> DECIPHER{'{flag_text}'}
+            </p>
+          </div>
         </div>
 
         {/* Flag Submission */}
@@ -166,6 +285,8 @@ export default function Question3Page() {
             <span className="mr-3 text-2xl">🚩</span>
             SUBMIT YOUR FLAG:
           </label>
+          
+          
           <form onSubmit={handleSubmit}>
             <div className="flex gap-4">
               <input
@@ -173,14 +294,18 @@ export default function Question3Page() {
                 value={flagInput}
                 onChange={(e) => setFlagInput(e.target.value)}
                 placeholder="DECIPHER{...}"
-                className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all"
+                disabled={isSubmitting || completed}
+                className="flex-1 bg-black/70 border-2 border-green-400/50 rounded-lg px-6 py-4 text-white font-mono text-lg focus:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400/30 transition-all disabled:opacity-50"
               />
               <button
                 type="submit"
-                className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-mono text-green-200 transition-all group"
+                disabled={isSubmitting || completed}
+                className="bg-black/70 backdrop-blur-sm border-2 border-green-400/50 hover:border-green-300 px-8 py-4 rounded-lg hover:bg-green-900/40 font-mono text-green-200 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span className="mr-2">🚀</span>
-                <span className="group-hover:animate-pulse">SUBMIT FLAG</span>
+                <span className="group-hover:animate-pulse">
+                  {isSubmitting ? 'SUBMITTING...' : completed ? 'COMPLETED' : 'SUBMIT FLAG'}
+                </span>
               </button>
             </div>
           </form>
@@ -231,5 +356,5 @@ export default function Question3Page() {
       </div>
     </div>
     </div>
-  );
+);
 }
