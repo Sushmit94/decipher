@@ -5,11 +5,11 @@ import api from "@/lib/axios";
 
 const QUESTION_7 = {
   id: 7,
-  title: "Digital Detective Work",
+  title: "Thala For a Reason",
 
  
   flag: "DECIPHER{Dh0N1_1s_Th3_B3st}",
-  description: "Welcome to the world of OSINT (Open Source Intelligence)! Your mission is to gather information from publicly available sources. Investigate the given website thoroughly - examine the source code, check for hidden elements, analyze metadata, and use your detective skills to uncover the hidden flag. Remember, in OSINT, the devil is in the details!",
+  description: "Isn't 7 the best number????",
   challenge: "https://mathurninaad.github.io/PookieDhoni/"
 };
 
@@ -106,7 +106,7 @@ export default function Question7Page() {
         if (response.data.success) {
           setCompleted(true);
           setTotalPoints(response.data.data.points);
-          setMessage(`Excellent detective work! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. You've mastered the art of OSINT!`);
+          setMessage(`Excellent detective work! You earned ${response.data.data.pointsAdded} point(s)! Total: ${response.data.data.points}. You've mastered the art of Inspection!`);
           setIsSuccess(true);
           
           // Dispatch event to notify questions page
@@ -208,7 +208,7 @@ export default function Question7Page() {
       ></div>
       
       {/* Dark overlay */}
-      <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+      <div className="fixed inset-0 bg-black/50" style={{ zIndex: -1 }}></div>
       
       {/* Content */}
       <div className="relative z-10 text-white p-8">

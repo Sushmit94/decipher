@@ -6,7 +6,7 @@ import api from "@/lib/axios";
 const QUESTION_1 = {
   id: 1,
   title: "Welcome to Decipher",
-  flag: "DECIPHER{Welcome_newbies}",
+  flag: "DECIPHER{W3lc0m3_n3wb135}",
   description: "A simple Base64 decoding challenge to get you started.",
   challenge: "V2VsY29tZSwgWS0yNSBiYXRjaCwgdG8gRGVjaXBoZXIhIEdldCByZWFkeSB0byBleHBsb3JlLCBsZWFybiwgYW5kIGNoYWxsZW5nZSB5b3Vyc2VsZiBpbiB0aGUgd29ybGQgb2YgY3liZXJzZWN1cml0eS4gTGV0cyBkZWNvZGUgdGhlIHVua25vd24gYW5kIGdyb3cgdG9nZXRoZXIuIFdlbGNvbWUgYWJvYXJkIQpUSGUgZmxhZyBpcyAtIERFQ0lQSEVSe1dlbGNvbWVfbmV3Ymllc30="
 };

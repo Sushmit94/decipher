@@ -7,7 +7,7 @@ import api from "@/lib/axios";
 const QUESTION_6 = {
   id: 6,
   title: "Hidden in Plain Sight",
-  flag: "DECIPHER{St3g_1s_Th3_b35t}",
+  flag: "DECIPHER{D3c1ph3r_1s_Th3_B3st_3v3nt_s0_f4r}",
   description: "Just staring at this image won't reveal anything. So, start thinking on how we can embed data in an image?? The flag like always is hidden somewhere in this image. Search for it and if you get it. I'll say you've already begun your journey as a hacker!",
   challenge: "image2.jpeg"
 };
@@ -159,8 +159,8 @@ function Question6Page() {
   const downloadImage = () => {
     // Create a temporary link to download the image
     const link = document.createElement('a');
-    link.href = '/image2.jpeg';
-    link.download = 'steganography_challenge.jpeg';
+    link.href = '/decipher_steg.png';
+    link.download = 'challenge.jpeg';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -180,7 +180,7 @@ function Question6Page() {
             zIndex: -2
           }}
         ></div>
-        <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+        <div className="fixed inset-0 bg-black/50" style={{ zIndex: -1 }}></div>
         <div className="relative z-10 text-white p-8">
           <div className="max-w-4xl mx-auto flex items-center justify-center min-h-screen">
             <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 text-center">
@@ -208,7 +208,7 @@ function Question6Page() {
       ></div>
       
       {/* Dark overlay */}
-      <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+      <div className="fixed inset-0 bg-black/50" style={{ zIndex: -1 }}></div>
       
       {/* Content */}
       <div className="relative z-10 text-white p-8">
@@ -268,13 +268,13 @@ function Question6Page() {
             <div className="flex justify-center">
               <div className="bg-black/60 border-2 border-purple-400/30 rounded-lg p-4 hover:border-purple-300/60 transition-all">
                 <img 
-                  src="/image2.jpeg" 
-                  alt="Steganography Challenge" 
+                  src="/decipher_steg.png" 
+                  alt="Challenge" 
                   className="max-w-full max-h-96 rounded border-2 border-purple-400/40 shadow-lg hover:shadow-purple-400/30 transition-all cursor-pointer"
-                  onClick={() => window.open('/image2.jpeg', '_blank')}
+                  onClick={() => window.open('/decipher_steg.png', '_blank')}
                 />
                 <div className="text-center mt-4">
-                  <div className="font-poppins text-lg text-purple-300">steganography_challenge.jpeg</div>
+                  <div className="font-poppins text-lg text-purple-300">challenge.jpeg</div>
                   <div className="font-poppins text-sm text-purple-400 mt-2">[Click to view full size]</div>
                   <div className="font-poppins text-xs text-gray-400 mt-3">
                     Contains hidden data using steganographic techniques

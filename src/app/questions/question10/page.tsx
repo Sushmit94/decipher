@@ -7,7 +7,7 @@ import api from "@/lib/axios";
 const QUESTION_10 = {
   id: 10,
   title: "Anonymous Cheating",
-  flag: "DECIPHER{0x_tr4ns4ct10n_tr4c1ng_r3v34ls_4ll}",
+  flag: "DECIPHER{ch3a1er_c4ught}",
   description: "A cheater just bought a flag to one of the problems to the CTF through a blockchain smart contract setup by the black market seller on the Sepolia testnet. He used his personal wallet to send 0.05 ETH to his alt wallet for buying the flag. Can you find the proof of him cheating? 🕵️‍♂️ Trace the transaction flow and discover what really happened on the blockchain. The truth is always recorded on-chain!",
   cheaterWallet: "0xaa8A4A0df322aB0a1B5D623450ee1d426aC43C2F",
   blockExplorer: "https://sepolia.etherscan.io/"
@@ -118,7 +118,7 @@ function Question10Page() {
           
           // Auto-navigate to next question after 4 seconds
           setTimeout(() => {
-            router.push('/questions');
+            router.push('/questions/question11');
           }, 4000);
           
         } else {

@@ -15,36 +15,36 @@ const QUESTIONS = [
     title: "Welcome to CTF",
     difficulty: 'Easy',
     points: 1,
-    flag: "DECIPHER{Welcome_newbies}",
+    flag: "DECIPHER{W3lc0m3_n3wb135}",
     description: "A simple Base64 decoding challenge to get you started."
   },
   {
     id: 2,
-    title: "Caesar's Secret",
+    title: "Ancient Script",
     difficulty: 'Easy',
     points: 1,
     flag: "DECIPHER{Khaleesi}",
-    description: "Decode the Caesar cipher to find the flag."
+    description: "Decode the secret language."
   },
   {
     id: 3,
     title: "Hidden in Plain Sight",
     difficulty: 'Medium',
     points: 1,
-    flag: "DECIPHER{M3T4D4T4_4NALY51S}",
+    flag: "DECIPHER{3x1ft00l_w0rks}",
     description: "Look deeper into the image to find the hidden message."
   },
   {
     id: 4,
-    title: "Web Inspector",
+    title: "Mr. ROBOT",
     difficulty: 'Medium',
     points: 1,
-    flag: "DECIPHER{inspect_element_pro}",
-    description: "Use browser developer tools to find the flag."
+    flag: "DECIPHER{y0u_f0und_th3_r0bot5}",
+    description: "Where are the Mr. Robots hiding?"
   },
   {
     id: 5,
-    title: "Binary Secrets",
+    title: "Secrets",
     difficulty: 'Hard',
     points: 1,
     flag: "DECIPHER{Pavlou}",
@@ -52,27 +52,27 @@ const QUESTIONS = [
   },
   {
     id: 6,
-    title: "SQL Injection",
+    title: "Image Analysis",
     difficulty: 'Hard',
     points: 1,
-    flag: "DECIPHER{St3g_1s_Th3_b35t}",
-    description: "Find the SQL injection vulnerability."
+    flag: "DECIPHER{D3c1ph3r_1s_Th3_B3st_3v3nt_s0_f4r}",
+    description: "Find the hidden message within the image."
   },
   {
     id: 7,
-    title: "Advanced Steganography",
+    title: "Thala for a reason",
     difficulty: 'Hard',
     points: 1,
     flag: "DECIPHER{Dh0N1_1s_Th3_B3st}",
-    description: "Advanced steganography techniques required."
+    description: "Isn't 7 the best number????"
   },
   {
     id: 8,
-    title: "Reverse Engineering",
+    title: "Spectre",
     difficulty: 'Hard',
     points: 1,
     flag: "DECIPHER{sp3ctr0}",
-    description: "Reverse engineer the binary to find the flag."
+    description: "Uncover the hidden layers of the audio."
   },
   {
     id: 9,
@@ -84,27 +84,27 @@ const QUESTIONS = [
   },
   {
     id: 10,
-    title: "Final Challenge",
+    title: "Anonymous Cheating",
     difficulty: "Hard",
     points: 1,
-    flag: "DECIPHER{final_boss_defeated}",
-    description: "The ultimate challenge awaits the worthy."
+    flag: "DECIPHER{ch3a1er_c4ught}",
+    description: "Find the cheater!!!"
   },
   {
     id: 11,
-    title: "Final Challenge",
+    title: "Double Trouble",
     difficulty: "Hard",
     points: 1,
-    flag: "DECIPHER{final_boss_defeated}",
-    description: "The ultimate challenge awaits the worthy."
+    flag: "DECIPHER{dualboot}",
+    description: "This time we use two different encoding methods."
   },
   {
     id: 12,
-    title: "Final Challenge",
+    title: "Medical Mystery",
     difficulty: "Hard",
     points: 1,
-    flag: "DECIPHER{final_boss_defeated}",
-    description: "The ultimate challenge awaits the worthy."
+    flag: "DECIPHER{David_Morgan_Jones}",
+    description: "Help me find the doctor!"
   },
   
 
@@ -357,11 +357,8 @@ export default function QuestionsPage() {
                 <span className="text-yellow-300">Progress:</span> {completedQuestions.length} / {QUESTIONS.length} completed
               </p>
               
-              {serverPoints === 0 && (
-                <p className="text-sm font-poppins text-orange-300 mt-2">
-                  💡 Complete questions to unlock more challenges!
-                </p>
-              )}
+
+              
             </div>
           </div>
 

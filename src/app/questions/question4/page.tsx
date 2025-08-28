@@ -5,11 +5,9 @@ import api from "@/lib/axios";
 
 const QUESTION_4 = {
   id: 4,
-  title: "Ancient Script",
-  
-  
-  flag: "DECIPHER{Khaleesi}",
-  description: "This word belongs to a language spoken by nomadic horse riders in a famous fantasy world. Can you decipher it?",
+  title: "Where are the Robots",
+  flag: "DECIPHER{y0u_f0und_th3_r0bot5}",
+  description: "Visit this link to find where the robots are hiding.",
 };
 
 export default function Question4Page() {
@@ -72,7 +70,7 @@ export default function Question4Page() {
         setIsSuccess(true);
       }else if (points < 3) {
         // User hasn't completed previous questions, redirect them
-        setError("You must complete Questions 1-4 first!");
+        setError("You must complete Questions 1-3 first!");
         setTimeout(() => {
           router.push('/questions');
         }, 2000);
@@ -155,8 +153,10 @@ export default function Question4Page() {
     }
   };
 
-  const showHint = () => {
-    alert("💡 HINT: This script belongs to the horse lords of the Great Grass Sea. Think about famous fantasy TV shows and the title given to their queen!");
+  
+
+  const openRobotsLink = () => {
+    window.open('https://mathurninaad.github.io/Robots/', '_blank');
   };
 
   // Show loading state
@@ -201,7 +201,7 @@ export default function Question4Page() {
       ></div>
       
       {/* Dark overlay */}
-      <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+      <div className="fixed inset-0 bg-black/50" style={{ zIndex: -1 }}></div>
       
       {/* Content */}
       <div className="relative z-10 text-white p-8">
@@ -241,40 +241,51 @@ export default function Question4Page() {
 
       
         {/* Question Content */}
-        <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 mb-8">
+        <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 mb-8 relative">
         {completed && (
-  <div className="absolute top-3 right-3 inline-flex items-center gap-2 bg-green-900/70 border border-green-500 px-4 py-1 rounded-full text-green-200 font-semibold shadow-sm">
-    <span className="text-lg">✅</span>
-    <span>COMPLETED</span>
-  </div>
-)}
+          <div className="absolute top-3 right-3 inline-flex items-center gap-2 bg-green-900/70 border border-green-500 px-4 py-1 rounded-full text-green-200 font-semibold shadow-sm">
+            <span className="text-lg">✅</span>
+            <span>COMPLETED</span>
+          </div>
+        )}
 
           <h2 className="text-3xl font-bold mb-6 font-poppins text-white">{QUESTION_4.title}</h2>
           <p className="mb-8 text-lg text-gray-200 font-poppins">{QUESTION_4.description}</p>
           
           {/* Challenge */}
-          <div className="bg-black/60 border-2 border-amber-400/50 rounded-lg p-6 mb-6">
-            <h3 className="text-amber-300 mb-4 text-xl font-poppins flex items-center">
-              <span className="mr-3 text-2xl">🐎</span>
-              NOMADIC SCRIPT:
+          <div className="bg-black/60 border-2 border-blue-400/50 rounded-lg p-6 mb-6">
+            <h3 className="text-blue-300 mb-4 text-xl font-poppins flex items-center">
+              <span className="mr-3 text-2xl">🤖</span>
+              ROBOTS INVESTIGATION:
             </h3>
             
-            {/* Script Image Display */}
-            <div className="bg-black/60 p-6 rounded border-2 border-amber-400/30 text-center">
-              <img 
-                src="/q4.png" 
-                alt="Dothraki Script Challenge" 
-                className="max-w-full h-auto rounded-lg border-2 border-amber-400/30 mx-auto bg-white p-4"
-                style={{ maxHeight: '200px' }}
-              />
+            {/* Link Display */}
+            <div className="bg-black/60 p-6 rounded border-2 border-blue-400/30 text-center">
+              <div className="mb-4">
+                <div className="text-blue-200 font-poppins text-lg mb-2">Target Website:</div>
+                <div 
+                  className="bg-black/40 border border-blue-400/40 rounded-lg p-4 font-mono text-blue-300 text-lg cursor-pointer hover:bg-blue-900/20 transition-all"
+                  onClick={() => {
+                    navigator.clipboard.writeText('https://mathurninaad.github.io/Robots/');
+                    alert('🔗 Link copied to clipboard!');
+                  }}
+                  title="Click to copy link"
+                >
+                  https://mathurninaad.github.io/Robots/
+                </div>
+              </div>
+              
+              <button 
+                onClick={openRobotsLink}
+                className="bg-black/70 backdrop-blur-sm border-2 border-blue-400/50 hover:border-blue-300 px-6 py-3 rounded-lg hover:bg-blue-900/40 font-poppins text-blue-200 transition-all group"
+              >
+                <span className="mr-3">🌐</span>
+                <span className="group-hover:animate-pulse">VISIT WEBSITE</span>
+              </button>
             </div>
             
-            <p className="text-gray-400 text-sm mt-3 font-poppins">📜 Ancient script of the horse lords</p>
+            <p className="text-gray-400 text-sm mt-3 font-poppins text-center">🔍 Investigate the website to find where the robots are hiding</p>
           </div>
-          
-          
-          
-          
         </div>
 
         {/* Flag Submission */}
@@ -320,7 +331,6 @@ export default function Question4Page() {
 
         {/* Actions */}
         <div className="flex justify-center gap-6">
-          
           
           {completed && (
             <button 

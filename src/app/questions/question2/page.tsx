@@ -118,7 +118,7 @@ export default function Question2Page() {
           
           // Auto-navigate to next question after 3 seconds
           setTimeout(() => {
-            router.push('/questions/question5');
+            router.push('/questions/question3');
           }, 3000);
           
         } else {
@@ -173,7 +173,7 @@ export default function Question2Page() {
             zIndex: -2
           }}
         ></div>
-        <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+        <div className="fixed inset-0 bg-black/50" style={{ zIndex: -1 }}></div>
         <div className="relative z-10 text-white p-8">
           <div className="max-w-4xl mx-auto flex items-center justify-center min-h-screen">
             <div className="bg-black/50 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 text-center">

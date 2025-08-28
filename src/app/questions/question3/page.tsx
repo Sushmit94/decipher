@@ -5,10 +5,10 @@ import api from "@/lib/axios";
 
 const QUESTION_3 = {
   id: 3,
-  title: "Cipher Secret",
+  title: "Secret",
   
-  flag: "DECIPHER{M3T4D4T4_4NALY51S}",
-  description: "Cipher is an amazing club, and Decipher is an amazing event! There is some data in this image, that's of great use to you, decrypt it and you win.",
+  flag: "DECIPHER{3x1ft00l_w0rks}",
+  description: "You’ve uncovered an image that seems ordinary at first glance. But appearances can be deceiving. Retrieve the hidden information within the image and submit it as your answer.",
   challenge: "url('/image.png')"
 };
 
@@ -200,7 +200,7 @@ export default function Question3Page() {
       ></div>
       
       {/* Dark overlay */}
-      <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+      <div className="fixed inset-0 bg-black/50" style={{ zIndex: -1 }}></div>
       
       {/* Content */}
       <div className="relative z-10 text-white p-8">
@@ -253,11 +253,11 @@ export default function Question3Page() {
           <div className="bg-black/60 border-2 border-cyan-400/50 rounded-lg p-6 mb-6">
             <h3 className="text-cyan-300 mb-4 text-xl font-poppins flex items-center">
               <span className="mr-3 text-2xl">🖼️</span>
-              CIPHER CLUB IMAGE:
+                IMAGE:
             </h3>
             <div className="bg-black/60 p-6 rounded border-2 border-cyan-400/30 text-center">
               <img 
-                src="/image.png" 
+                src="/exifworks.png" 
                 alt="Cipher Club Challenge Image" 
                 className="max-w-full h-auto rounded-lg border-2 border-cyan-400/30 mx-auto"
               />

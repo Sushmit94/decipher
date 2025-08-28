@@ -202,7 +202,7 @@ export default function Question5Page() {
       ></div>
       
       {/* Dark overlay */}
-      <div className="fixed inset-0 bg-black/70" style={{ zIndex: -1 }}></div>
+      <div className="fixed inset-0 bg-black/50" style={{ zIndex: -1 }}></div>
       
       {/* Content */}
       <div className="relative z-10 text-white p-8">
